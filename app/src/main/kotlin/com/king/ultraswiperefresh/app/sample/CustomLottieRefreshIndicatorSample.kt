@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.airbnb.lottie.compose.LottieCompositionSpec
+import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import com.king.ultraswiperefresh.NestedScrollMode
 import com.king.ultraswiperefresh.UltraSwipeRefresh
 import com.king.ultraswiperefresh.app.R
@@ -43,6 +43,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun CustomLottieRefreshIndicatorSample() {
 
+    val context = LocalContext.current
+    val rhombJson = remember {
+        context.resources.openRawResource(R.raw.usr_lottie_rhomb).bufferedReader().use { it.readText() }
+    }
+    val soundWaveJson = remember {
+        context.resources.openRawResource(R.raw.usr_lottie_sound_wave).bufferedReader().use { it.readText() }
+    }
+
     val state = rememberUltraSwipeRefreshState()
     var itemCount by remember { mutableIntStateOf(20) }
     var hasMoreData by remember { mutableStateOf(true) }
@@ -60,8 +68,6 @@ fun CustomLottieRefreshIndicatorSample() {
             hasMoreData = false
         }
     }
-
-    val context = LocalContext.current
 
     UltraSwipeRefresh(
         state = state,
@@ -91,13 +97,13 @@ fun CustomLottieRefreshIndicatorSample() {
         headerIndicator = {
             LottieRefreshHeader(
                 state = it,
-                spec = LottieCompositionSpec.RawRes(R.raw.usr_lottie_rhomb)
+                spec = LottieCompositionSpec.JsonString(rhombJson)
             )
         },
         footerIndicator = {
             LottieRefreshFooter(
                 state = it,
-                spec = LottieCompositionSpec.RawRes(R.raw.usr_lottie_sound_wave),
+                spec = LottieCompositionSpec.JsonString(soundWaveJson),
             )
         }
     ) {

@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieCompositionSpec
+import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import com.king.ultraswiperefresh.UltraSwipeRefreshState
 
 /**
@@ -17,10 +17,10 @@ import com.king.ultraswiperefresh.UltraSwipeRefreshState
  * <a href="https://github.com/jenly1314">Follow me</a>
  */
 @Composable
-fun LottieRefreshFooter(
+fun LottieRefreshHeader(
     state: UltraSwipeRefreshState,
     modifier: Modifier = Modifier,
-    spec: LottieCompositionSpec = LottieCompositionSpec.RawRes(R.raw.usr_default_lottie_animation),
+    spec: LottieCompositionSpec = DefaultLottieSpec,
     height: Dp = 60.dp,
     alignment: Alignment = Alignment.Center,
     speed: Float = 1f,
@@ -28,7 +28,7 @@ fun LottieRefreshFooter(
 ) {
     LottieRefreshIndicator(
         state = state,
-        isFooter = true,
+        isFooter = false,
         spec = spec,
         modifier = modifier,
         height = height,

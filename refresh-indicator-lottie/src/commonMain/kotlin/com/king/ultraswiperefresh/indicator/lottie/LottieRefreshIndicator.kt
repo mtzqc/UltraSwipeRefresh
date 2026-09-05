@@ -1,6 +1,7 @@
 package com.king.ultraswiperefresh.indicator.lottie
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,15 +12,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCancellationBehavior
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
+import io.github.alexzhirkevich.compottie.Compottie
+import io.github.alexzhirkevich.compottie.LottieCancellationBehavior
+import io.github.alexzhirkevich.compottie.LottieCompositionSpec
+import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
+import io.github.alexzhirkevich.compottie.rememberLottieComposition
+import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import com.king.ultraswiperefresh.UltraSwipeFooterState
 import com.king.ultraswiperefresh.UltraSwipeHeaderState
 import com.king.ultraswiperefresh.UltraSwipeRefreshState
@@ -60,8 +62,13 @@ internal fun LottieRefreshIndicator(
         isPlaying = isPlaying,
         restartOnPlay = true,
         speed = speed,
-        iterations = LottieConstants.IterateForever,
+        iterations = Compottie.IterateForever,
         cancellationBehavior = LottieCancellationBehavior.OnIterationFinish,
+    )
+
+    val painter: Painter = rememberLottiePainter(
+        composition = composition,
+        progress = { progress }
     )
 
     val targetAlpha by remember(isFooter, state) {
@@ -83,10 +90,11 @@ internal fun LottieRefreshIndicator(
             .height(height),
         contentAlignment = alignment,
     ) {
-        LottieAnimation(
-            composition = composition,
-            progress = { progress },
+        Image(
+            painter = painter,
+            contentDescription = null,
             modifier = modifier,
+            alignment = alignment,
             contentScale = contentScale,
         )
     }

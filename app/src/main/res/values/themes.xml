@@ -3,7 +3,7 @@
 
     <style name="Theme.UltraSwipeRefresh" parent="android:Theme.Material.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/teal</item>
+        <item name="android:colorPrimary">@color/teal</item>
         <item name="android:statusBarColor">@color/teal</item>
         <item name="android:navigationBarColor">@color/white</item>
     </style>
