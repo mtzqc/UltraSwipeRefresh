@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.dokka)
+    `maven-publish`
 }
 
 kotlin {
