@@ -1,5 +1,15 @@
 ## 版本日志
 
+#### v2.0.0 ：2026-9-5
+- **重大变更：项目全面迁移至 Kotlin Multiplatform**，支持平台：Android、iOS（arm64/Simulator）、Desktop（Windows/macOS/Linux）、macOS（arm64）、JS、Wasm
+- 更新Kotlin至v2.3.20 (v1.9.20 -> v2.3.20)；Compose改用Compose Multiplatform v1.11.1
+- minSdk变更为24（v21 -> v24，由Compottie依赖要求）
+- **发布渠道变更**：改由 GitHub Packages 发布（消费者需配置认证，详见README）；Maven Central上的旧版本不再更新
+- `refresh-indicator-lottie`：lottie-compose替换为[Compottie](https://github.com/alexzhirkevich/compottie) v2.2.4（多平台）；公共API中`LottieCompositionSpec`类型随Compottie变化，`RawRes`/`Asset`不再可用——动画JSON建议放置于`commonMain/composeResources/files`后自行读取内容并以`LottieCompositionSpec.JsonString`构造（可参考库内`DefaultLottieSpec`实现）
+- 振动反馈改为跨平台expect/actual：Android沿用Vibrator、iOS使用UIKit触觉反馈、Desktop/JS/Wasm为no-op
+- 移除`androidx.annotation.FloatRange/IntRange`注解（公共API签名不受影响）
+- demo模块KMP化为`composeApp`（Android/Desktop/iOS/JS/Wasm多入口）
+
 #### v1.6.0 ：2026-8-4
 - 更新compileSdk至35
 - 更新compose至v1.8.0 (v1.7.0 -> v1.8.0)

@@ -24,32 +24,65 @@
 
 > 你也可以直接下载 [演示App](https://raw.githubusercontent.com/jenly1314/UltraSwipeRefresh/master/app/release/app-release.apk) 体验效果
 
+## 平台支持
+
+| 平台 | 支持情况 |
+|---|---|
+| Android (minSdk 24) | ✅ |
+| iOS (arm64 / SimulatorArm64) | ✅ |
+| Desktop (Windows / macOS / Linux) | ✅ |
+| macOS (arm64) | ✅ |
+| JS (IR) | ✅ |
+| Wasm | ✅ |
+
 ## 引入
 
 ### Gradle:
 
-1. 在Project的 **build.gradle** 或 **setting.gradle** 中添加远程仓库
+1. 在Project的 **build.gradle.kts** 或 **settings.gradle.kts** 中添加远程仓库
 
-    ```gradle
+    > **注意**：自 v2.0.0 起改由 GitHub Packages 发布。GitHub Packages 的 Maven 仓库即使公开包也需要认证下载，
+    > 消费者需准备一个具备 `read:packages` 权限的 [GitHub PAT](https://github.com/settings/tokens)。
+
+    ```kotlin
     repositories {
         //...
-        mavenCentral()
+        maven {
+            url = uri("https://maven.pkg.github.com/jenly1314/UltraSwipeRefresh")
+            credentials {
+                username = findProperty("gpr.user") as String?   // GitHub 用户名，或环境变量 GITHUB_ACTOR
+                password = findProperty("gpr.key") as String?    // GitHub PAT，或环境变量 GITHUB_TOKEN
+            }
+        }
     }
+    ```
+
+   并在本机的 **~/.gradle/gradle.properties** 中配置凭证：
+
+    ```properties
+    gpr.user=你的GitHub用户名
+    gpr.key=你的GitHub PAT
     ```
 
 2. 在Module的 **build.gradle** 中添加依赖项
 
     ```gradle
     // 极致体验的Compose刷新组件 (*必须)
-    implementation 'com.github.jenly1314.UltraSwipeRefresh:refresh:1.6.0'
+    implementation 'com.github.jenly1314.UltraSwipeRefresh:refresh:2.0.0'
 
     // 经典样式的指示器 (可选)
-    implementation 'com.github.jenly1314.UltraSwipeRefresh:refresh-indicator-classic:1.6.0'
+    implementation 'com.github.jenly1314.UltraSwipeRefresh:refresh-indicator-classic:2.0.0'
     // Lottie动画指示器 (可选)
-    implementation 'com.github.jenly1314.UltraSwipeRefresh:refresh-indicator-lottie:1.6.0'
+    implementation 'com.github.jenly1314.UltraSwipeRefresh:refresh-indicator-lottie:2.0.0'
     // 进度条样式的指示器 (可选)
-    implementation 'com.github.jenly1314.UltraSwipeRefresh:refresh-indicator-progress:1.6.0'
+    implementation 'com.github.jenly1314.UltraSwipeRefresh:refresh-indicator-progress:2.0.0'
     ```
+
+#### v2.0.0 迁移说明
+
+- Lottie 指示器内部改用 [Compottie](https://github.com/alexzhirkevich/compottie)（多平台），公共API中的 `LottieCompositionSpec` 类型随之变化：`RawRes`/`Asset` 不再可用，动画JSON建议放置于 `commonMain/composeResources/files`，通过 `LottieCompositionSpec.JsonString` 加载（参考库内 `DefaultLottieSpec` 实现）
+- minSdk 由 21 提升至 24
+- 现有 Maven Central 上的 v1.x 产物仍可继续使用，但不再更新
 
 ## 使用
 
