@@ -26,7 +26,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "UltraSwipeRefresh"
 include(
-    ":app",
+    ":composeApp",
     ":refresh",
     ":refresh-indicator-classic",
     ":refresh-indicator-progress",
