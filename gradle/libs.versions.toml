@@ -1,13 +1,14 @@
 [versions]
-agp = "8.6.0"
-kotlin = "1.9.20"
-dokka = "1.9.20"
-mavenPublish = "0.34.0"
+agp = "8.13.1"
+kotlin = "2.2.21"
+dokka = "2.0.0"
 
 compileSdk = "35"
 minSdk = "21"
 targetSdk = "35"
-composeCompiler = "1.5.5"
+
+composeMultiplatform = "1.11.1"
+compottie = "2.2.4"
 
 coreKtx = "1.13.1"
 composeBom = "2025.04.01"
@@ -39,6 +40,7 @@ androidx-compose-foundation = { module = "androidx.compose.foundation:foundation
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
 airbnb-lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
+compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
@@ -48,5 +50,7 @@ androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core",
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
