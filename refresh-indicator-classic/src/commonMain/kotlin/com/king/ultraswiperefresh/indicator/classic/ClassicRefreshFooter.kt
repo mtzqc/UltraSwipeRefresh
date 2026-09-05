@@ -11,17 +11,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.king.ultraswiperefresh.indicator.classic.generated.resources.Res
+import com.king.ultraswiperefresh.indicator.classic.generated.resources.*
+import kotlin.time.Clock
+import kotlin.time.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format.byUnicodePattern
+import kotlinx.datetime.toLocalDateTime
 import com.king.ultraswiperefresh.UltraSwipeFooterState
 import com.king.ultraswiperefresh.UltraSwipeRefreshState
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 /**
  * 经典样式的指示器
@@ -50,8 +55,8 @@ fun ClassicRefreshFooter(
     ),
     tipTimeVisible: Boolean = true,
     paddingValues: PaddingValues = PaddingValues(12.dp),
-    arrowIconPainter: Painter = painterResource(id = R.drawable.usr_classic_arrow),
-    loadingIconPainter: Painter = painterResource(id = R.drawable.usr_classic_spinner),
+    arrowIconPainter: Painter = painterResource(Res.drawable.usr_classic_arrow),
+    loadingIconPainter: Painter = painterResource(Res.drawable.usr_classic_spinner),
     tipMinWidth: Dp = 100.dp,
     iconSize: Dp = 24.dp,
     iconColorFilter: ColorFilter? = null,
@@ -81,19 +86,19 @@ fun ClassicRefreshFooter(
 @Composable
 private fun obtainFooterTipContent(state: UltraSwipeRefreshState): String {
     val textRes = when (state.footerState) {
-        UltraSwipeFooterState.PullUpToLoad -> R.string.usr_pull_up_to_load
-        UltraSwipeFooterState.ReleaseToLoad -> R.string.usr_release_to_load
+        UltraSwipeFooterState.PullUpToLoad -> Res.string.usr_pull_up_to_load
+        UltraSwipeFooterState.ReleaseToLoad -> Res.string.usr_release_to_load
         UltraSwipeFooterState.Loading -> {
             if (state.isFinishing) {
-                R.string.usr_load_completed
+                Res.string.usr_load_completed
             } else {
-                R.string.usr_loading
+                Res.string.usr_loading
             }
         }
-        UltraSwipeFooterState.ReleaseToSecondary -> R.string.usr_release_to_secondary_footer
-        UltraSwipeFooterState.Secondary -> R.string.usr_secondary_footer
+        UltraSwipeFooterState.ReleaseToSecondary -> Res.string.usr_release_to_secondary_footer
+        UltraSwipeFooterState.Secondary -> Res.string.usr_secondary_footer
     }
-    return stringResource(id = textRes)
+    return stringResource(textRes)
 }
 
 /**
@@ -101,20 +106,19 @@ private fun obtainFooterTipContent(state: UltraSwipeRefreshState): String {
  */
 @Composable
 private fun obtainLastLoadTime(state: UltraSwipeRefreshState): String {
-    var lastLoadTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    var lastLoadTime by remember {
+        mutableLongStateOf(Clock.System.now().toEpochMilliseconds())
+    }
     LaunchedEffect(state.footerState) {
         if (state.footerState == UltraSwipeFooterState.Loading) {
-            lastLoadTime = System.currentTimeMillis()
+            lastLoadTime = Clock.System.now().toEpochMilliseconds()
         }
     }
-    val context = LocalContext.current
-    val dateFormat = remember {
-        SimpleDateFormat(
-            context.getString(R.string.usr_time_format_pattern),
-            Locale.getDefault()
-        )
-    }
-    return remember(lastLoadTime) {
-        "${context.getString(R.string.usr_last_load_time)}${dateFormat.format(lastLoadTime)}"
+    val pattern = stringResource(Res.string.usr_time_format_pattern)
+    val prefix = stringResource(Res.string.usr_last_load_time)
+    return remember(lastLoadTime, pattern) {
+        val dateTime = Instant.fromEpochMilliseconds(lastLoadTime)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+        prefix + LocalDateTime.Format { byUnicodePattern(pattern) }.format(dateTime)
     }
 }

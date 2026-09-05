@@ -38,11 +38,13 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
+import org.jetbrains.compose.resources.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.king.ultraswiperefresh.indicator.classic.generated.resources.Res
+import com.king.ultraswiperefresh.indicator.classic.generated.resources.*
 import com.king.ultraswiperefresh.UltraSwipeFooterState
 import com.king.ultraswiperefresh.UltraSwipeHeaderState
 import com.king.ultraswiperefresh.UltraSwipeRefreshState
@@ -72,8 +74,8 @@ internal fun ClassicRefreshIndicator(
     ),
     tipTimeVisible: Boolean = true,
     paddingValues: PaddingValues = PaddingValues(12.dp),
-    arrowIconPainter: Painter = painterResource(id = R.drawable.usr_classic_arrow),
-    loadingIconPainter: Painter = painterResource(id = R.drawable.usr_classic_spinner),
+    arrowIconPainter: Painter = painterResource(Res.drawable.usr_classic_arrow),
+    loadingIconPainter: Painter = painterResource(Res.drawable.usr_classic_spinner),
     tipMinWidth: Dp = 100.dp,
     iconSize: Dp = 24.dp,
     iconColorFilter: ColorFilter? = null,

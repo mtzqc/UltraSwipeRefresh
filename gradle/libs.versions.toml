@@ -9,6 +9,7 @@ targetSdk = "35"
 
 composeMultiplatform = "1.11.1"
 compottie = "2.2.4"
+kotlinxDatetime = "0.7.1"
 
 coreKtx = "1.13.1"
 composeBom = "2025.04.01"
@@ -42,6 +43,8 @@ accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiper
 airbnb-lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMultiplatform" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "composeMultiplatform" }
 
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }

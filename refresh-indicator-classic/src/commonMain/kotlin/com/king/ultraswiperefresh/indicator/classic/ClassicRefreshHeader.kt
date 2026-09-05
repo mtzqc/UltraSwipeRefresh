@@ -11,17 +11,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.king.ultraswiperefresh.indicator.classic.generated.resources.Res
+import com.king.ultraswiperefresh.indicator.classic.generated.resources.*
+import kotlin.time.Clock
+import kotlin.time.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format.byUnicodePattern
+import kotlinx.datetime.toLocalDateTime
 import com.king.ultraswiperefresh.UltraSwipeHeaderState
 import com.king.ultraswiperefresh.UltraSwipeRefreshState
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 /**
  * 经典样式的指示器
@@ -50,8 +55,8 @@ fun ClassicRefreshHeader(
     ),
     tipTimeVisible: Boolean = true,
     paddingValues: PaddingValues = PaddingValues(12.dp),
-    arrowIconPainter: Painter = painterResource(id = R.drawable.usr_classic_arrow),
-    loadingIconPainter: Painter = painterResource(id = R.drawable.usr_classic_spinner),
+    arrowIconPainter: Painter = painterResource(Res.drawable.usr_classic_arrow),
+    loadingIconPainter: Painter = painterResource(Res.drawable.usr_classic_spinner),
     tipMinWidth: Dp = 100.dp,
     iconSize: Dp = 24.dp,
     iconColorFilter: ColorFilter? = null,
@@ -81,19 +86,19 @@ fun ClassicRefreshHeader(
 @Composable
 private fun obtainHeaderTipContent(state: UltraSwipeRefreshState): String {
     val textRes = when (state.headerState) {
-        UltraSwipeHeaderState.PullDownToRefresh -> R.string.usr_pull_down_to_refresh
-        UltraSwipeHeaderState.ReleaseToRefresh -> R.string.usr_release_to_refresh
+        UltraSwipeHeaderState.PullDownToRefresh -> Res.string.usr_pull_down_to_refresh
+        UltraSwipeHeaderState.ReleaseToRefresh -> Res.string.usr_release_to_refresh
         UltraSwipeHeaderState.Refreshing -> {
             if (state.isFinishing) {
-                R.string.usr_refresh_completed
+                Res.string.usr_refresh_completed
             } else {
-                R.string.usr_refreshing
+                Res.string.usr_refreshing
             }
         }
-        UltraSwipeHeaderState.ReleaseToSecondary -> R.string.usr_release_to_secondary_header
-        UltraSwipeHeaderState.Secondary -> R.string.usr_secondary_header
+        UltraSwipeHeaderState.ReleaseToSecondary -> Res.string.usr_release_to_secondary_header
+        UltraSwipeHeaderState.Secondary -> Res.string.usr_secondary_header
     }
-    return stringResource(id = textRes)
+    return stringResource(textRes)
 }
 
 /**
@@ -101,20 +106,19 @@ private fun obtainHeaderTipContent(state: UltraSwipeRefreshState): String {
  */
 @Composable
 private fun obtainLastRefreshTime(state: UltraSwipeRefreshState): String {
-    var lastRefreshTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    var lastRefreshTime by remember {
+        mutableLongStateOf(Clock.System.now().toEpochMilliseconds())
+    }
     LaunchedEffect(state.headerState) {
         if (state.headerState == UltraSwipeHeaderState.Refreshing) {
-            lastRefreshTime = System.currentTimeMillis()
+            lastRefreshTime = Clock.System.now().toEpochMilliseconds()
         }
     }
-    val context = LocalContext.current
-    val dateFormat = remember {
-        SimpleDateFormat(
-            context.getString(R.string.usr_time_format_pattern),
-            Locale.getDefault()
-        )
-    }
-    return remember(lastRefreshTime) {
-        "${context.getString(R.string.usr_last_refresh_time)}${dateFormat.format(lastRefreshTime)}"
+    val pattern = stringResource(Res.string.usr_time_format_pattern)
+    val prefix = stringResource(Res.string.usr_last_refresh_time)
+    return remember(lastRefreshTime, pattern) {
+        val dateTime = Instant.fromEpochMilliseconds(lastRefreshTime)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+        prefix + LocalDateTime.Format { byUnicodePattern(pattern) }.format(dateTime)
     }
 }
