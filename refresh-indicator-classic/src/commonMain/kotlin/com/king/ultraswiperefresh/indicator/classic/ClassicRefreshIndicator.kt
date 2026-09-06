@@ -1,7 +1,5 @@
 package com.king.ultraswiperefresh.indicator.classic
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
@@ -9,11 +7,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -125,44 +118,34 @@ internal fun ClassicRefreshIndicator(
             modifier = Modifier.alpha(alpha),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AnimatedContent(
-                targetState = isInProgress,
-                transitionSpec = {
-                    (fadeIn(animationSpec) + scaleIn(animationSpec)).togetherWith(
-                        fadeOut(animationSpec) + scaleOut(animationSpec)
-                    )
-                },
-                label = label,
-            ) {
-                if (it) {
-                    val transition = rememberInfiniteTransition(label = "InfiniteTransition")
-                    val rotate by transition.animateFloat(
-                        initialValue = 0f,
-                        targetValue = 360f,
-                        animationSpec = infiniteRepeatable(
-                            animation = tween(durationMillis = 1000, easing = LinearEasing)
-                        ),
-                        label = "RotateAnimation"
-                    )
-                    Image(
-                        painter = loadingIconPainter,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(iconSize)
-                            .rotate(rotate),
-                        colorFilter = iconColorFilter,
-                    )
-
-                } else {
-                    Image(
-                        painter = arrowIconPainter,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(iconSize)
-                            .rotate(arrowDegrees.value),
-                        colorFilter = iconColorFilter,
-                    )
-                }
+            // 图标与文字直接切换（不做缩放/交叉渐变），避免松开时内容大小变化产生抖动（对齐 SmartRefreshLayout 的经典 Header 行为）
+            if (isInProgress) {
+                val transition = rememberInfiniteTransition(label = "InfiniteTransition")
+                val rotate by transition.animateFloat(
+                    initialValue = 0f,
+                    targetValue = 360f,
+                    animationSpec = infiniteRepeatable(
+                        animation = tween(durationMillis = 1000, easing = LinearEasing)
+                    ),
+                    label = "RotateAnimation"
+                )
+                Image(
+                    painter = loadingIconPainter,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(iconSize)
+                        .rotate(rotate),
+                    colorFilter = iconColorFilter,
+                )
+            } else {
+                Image(
+                    painter = arrowIconPainter,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(iconSize)
+                        .rotate(arrowDegrees.value),
+                    colorFilter = iconColorFilter,
+                )
             }
             Column(
                 modifier = Modifier
@@ -170,21 +153,11 @@ internal fun ClassicRefreshIndicator(
                     .widthIn(min = tipMinWidth),
                 verticalArrangement = Arrangement.Center
             ) {
-                Crossfade(
-                    targetState = tipContent,
-                    animationSpec = animationSpec,
-                ) {
-                    BasicText(text = it, style = tipContentStyle)
-                }
+                BasicText(text = tipContent, style = tipContentStyle)
 
                 if (tipTimeVisible) {
                     Spacer(modifier = Modifier.size(2.dp))
-                    Crossfade(
-                        targetState = tipTime,
-                        animationSpec = animationSpec,
-                    ) {
-                        BasicText(text = it, style = tipTimeStyle)
-                    }
+                    BasicText(text = tipTime, style = tipTimeStyle)
                 }
             }
         }
