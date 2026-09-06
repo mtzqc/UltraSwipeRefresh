@@ -5,6 +5,7 @@
 - 更新Kotlin至v2.3.20 (v1.9.20 -> v2.3.20)；Compose改用Compose Multiplatform v1.11.1
 - minSdk变更为24（v21 -> v24，由Compottie依赖要求）
 - **发布渠道变更**：改由 GitHub Packages 发布（消费者需配置认证，详见README）；Maven Central上的旧版本不再更新
+- 发布渠道说明：除 GitHub Packages 主渠道外，新增 [JitPack](https://jitpack.io/#jenly1314/UltraSwipeRefresh) 匿名备选下载渠道（依赖坐标相同）
 - `refresh-indicator-lottie`：lottie-compose替换为[Compottie](https://github.com/alexzhirkevich/compottie) v2.2.4（多平台）；公共API中`LottieCompositionSpec`类型随Compottie变化，`RawRes`/`Asset`不再可用——动画JSON建议放置于`commonMain/composeResources/files`后自行读取内容并以`LottieCompositionSpec.JsonString`构造（可参考库内`DefaultLottieSpec`实现）
 - 振动反馈改为跨平台expect/actual：Android沿用Vibrator、iOS使用UIKit触觉反馈、Desktop/JS/Wasm为no-op
 - 移除`androidx.annotation.FloatRange/IntRange`注解（公共API签名不受影响）

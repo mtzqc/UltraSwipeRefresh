@@ -3,7 +3,7 @@
 [![MavenCentral](https://img.shields.io/maven-central/v/com.github.jenly1314.UltraSwipeRefresh/refresh?logo=sonatype)](https://repo1.maven.org/maven2/com/github/jenly1314/UltraSwipeRefresh)
 [![JitPack](https://img.shields.io/jitpack/v/github/jenly1314/UltraSwipeRefresh?logo=jitpack)](https://jitpack.io/#jenly1314/UltraSwipeRefresh)
 [![CI](https://img.shields.io/github/actions/workflow/status/jenly1314/UltraSwipeRefresh/build.yml?logo=github)](https://github.com/jenly1314/UltraSwipeRefresh/actions/workflows/build.yml)
-[![Download](https://img.shields.io/badge/download-APK-brightgreen?logo=github)](https://raw.githubusercontent.com/jenly1314/UltraSwipeRefresh/master/app/release/app-release.apk)
+[![Download](https://img.shields.io/badge/download-APK-brightgreen?logo=github)](https://raw.githubusercontent.com/jenly1314/UltraSwipeRefresh/master/composeApp/release/app-release.apk)
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen?logo=android)](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels)
 [![License](https://img.shields.io/github/license/jenly1314/UltraSwipeRefresh?logo=open-source-initiative)](https://opensource.org/licenses/mit)
 
@@ -22,7 +22,7 @@
 
 ![Image](art/UltraSwipeRefresh.gif)
 
-> 你也可以直接下载 [演示App](https://raw.githubusercontent.com/jenly1314/UltraSwipeRefresh/master/app/release/app-release.apk) 体验效果
+> 你也可以直接下载 [演示App](https://raw.githubusercontent.com/jenly1314/UltraSwipeRefresh/master/composeApp/release/app-release.apk) 体验效果
 
 ## 平台支持
 
@@ -83,6 +83,31 @@
 - Lottie 指示器内部改用 [Compottie](https://github.com/alexzhirkevich/compottie)（多平台），公共API中的 `LottieCompositionSpec` 类型随之变化：`RawRes`/`Asset` 不再可用，动画JSON建议放置于 `commonMain/composeResources/files`，通过 `LottieCompositionSpec.JsonString` 加载（参考库内 `DefaultLottieSpec` 实现）
 - minSdk 由 21 提升至 24
 - 现有 Maven Central 上的 v1.x 产物仍可继续使用，但不再更新
+
+#### 渠道说明
+
+| 渠道 | 版本 | 是否需要认证 |
+|---|---|---|
+| Maven Central | 仅 1.x（遗留，不再更新） | 否 |
+| **GitHub Packages** | **2.x 起（主渠道）** | **是（`read:packages` PAT）** |
+| JitPack | 2.x 起（备选） | 否 |
+
+#### JitPack 备选渠道
+
+如果无法配置 GitHub PAT，可以使用 JitPack 作为匿名下载渠道（依赖坐标与 GitHub Packages 完全相同）：
+
+1. 在Project的 **build.gradle.kts** 或 **settings.gradle.kts** 中添加远程仓库
+
+    ```kotlin
+    repositories {
+        //...
+        maven("https://jitpack.io")
+    }
+    ```
+
+2. 依赖坐标不变，直接按上方方式引入即可
+
+> 注：JitPack 的产物由 JitPack 在其环境中构建，可用性以 [JitPack 构建状态](https://jitpack.io/#jenly1314/UltraSwipeRefresh) 为准。
 
 ## 使用
 
