@@ -25,6 +25,11 @@ import androidx.compose.ui.unit.sp
 import com.king.ultraswiperefresh.UltraSwipeFooterState
 import com.king.ultraswiperefresh.UltraSwipeRefresh
 import com.king.ultraswiperefresh.app.component.ColumnItem
+import com.king.ultraswiperefresh.app.generated.resources.Res
+import com.king.ultraswiperefresh.app.generated.resources.list_item_content
+import com.king.ultraswiperefresh.app.generated.resources.list_item_title
+import com.king.ultraswiperefresh.app.generated.resources.no_more_data
+import org.jetbrains.compose.resources.stringResource
 import com.king.ultraswiperefresh.indicator.classic.ClassicRefreshFooter
 import com.king.ultraswiperefresh.indicator.classic.ClassicRefreshHeader
 import com.king.ultraswiperefresh.rememberUltraSwipeRefreshState
@@ -93,7 +98,7 @@ fun ClassicRefreshIndicatorSample() {
             } else {
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Text(
-                        text = "没有更多数据了",
+                        text = stringResource(Res.string.no_more_data),
                         color = Color(0xFF999999),
                         fontSize = 15.sp,
                         modifier = Modifier.padding(vertical = 16.dp)
@@ -108,8 +113,8 @@ fun ClassicRefreshIndicatorSample() {
         ) {
             repeat(itemCount) {
                 item {
-                    val title = "UltraSwipeRefresh列表标题${it + 1}"
-                    val content = "UltraSwipeRefresh列表内容${it + 1}"
+                    val title = stringResource(Res.string.list_item_title, it + 1)
+                    val content = stringResource(Res.string.list_item_content, it + 1)
                     ColumnItem(title = title, content = content)
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = 16.dp),

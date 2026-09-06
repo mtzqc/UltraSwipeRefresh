@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="back">← Back</string>
+
+    <string name="screen_swipe_refresh_indicator_title">Default swipe refresh style</string>
+    <string name="screen_swipe_refresh_indicator_content">Uses NestedScrollMode.FixedContent; the content stays fixed while the Header or Footer slides</string>
+    <string name="screen_classic_refresh_indicator_title">Classic refresh style</string>
+    <string name="screen_classic_refresh_indicator_content">Uses NestedScrollMode.Translate; the Header or Footer slides together with the content</string>
+    <string name="screen_classic_auto_load_title">Classic refresh with auto load more</string>
+    <string name="screen_classic_auto_load_content">Uses NestedScrollMode.Translate; the Header or Footer slides together with the content, and load-more can be triggered automatically</string>
+    <string name="screen_progress_refresh_indicator_title">Progress refresh style</string>
+    <string name="screen_progress_refresh_indicator_content">Uses NestedScrollMode.FixedFront; both the Header/Footer and the content stay fixed, only the state changes</string>
+    <string name="screen_lottie_refresh_indicator_title">Lottie animation refresh style</string>
+    <string name="screen_lottie_refresh_indicator_content">Uses NestedScrollMode.FixedBehind; the Header/Footer stays fixed and only the content slides</string>
+    <string name="screen_custom_lottie_title">Custom Lottie animation refresh style</string>
+    <string name="screen_custom_lottie_content">Randomly switches scroll modes; the linkage between Header/Footer and the content is determined by [NestedScrollMode]</string>
+    <string name="screen_secondary_content_title">Secondary content</string>
+    <string name="screen_secondary_content_content">After passing the refresh threshold, keep pulling down to enter the Header secondary content (like a second floor); keep pulling up to enter the Footer secondary content (basement)</string>
+    <string name="screen_pull_refresh_title">Material Modifier.pullRefresh</string>
+    <string name="screen_pull_refresh_content">Pull-to-refresh only; used to compare the effect with UltraSwipeRefresh (may be removed later)</string>
+    <string name="screen_swipe_refresh_title">SwipeRefresh from Accompanist</string>
+    <string name="screen_swipe_refresh_content">Pull-to-refresh only; used to compare the effect with UltraSwipeRefresh (may be removed later)</string>
+
+    <string name="intro_title">UltraSwipeRefresh: an ultimate pull-to-refresh and load-more Compose component; a perfect replacement for the official SwipeRefresh with richer features and stronger extensibility.</string>
+    <string name="intro_content">[headerIndicator] and [footerIndicator] are fully customizable, and Header/Footer styles can be combined with scroll modes freely.</string>
+    <string name="random_mode_title">Default style + random scroll modes</string>
+    <string name="random_mode_content">\nSelected scroll modes on this page\nheaderScrollMode = NestedScrollMode.%1$s\nfooterScrollMode = NestedScrollMode.%2$s\nTap this item to randomly change the scroll modes of the Header and Footer</string>
+    <string name="toast_vibration_enabled">Vibration enabled globally</string>
+    <string name="toast_vibration_disabled">Vibration disabled globally</string>
+    <string name="toast_random_mode">Scroll modes randomized</string>
+    <string name="custom_lottie_random_title">Tap to randomly switch scroll modes</string>
+    <string name="custom_lottie_random_content">Selected scroll modes\nheaderScrollMode = NestedScrollMode.%1$s\nfooterScrollMode = NestedScrollMode.%2$s</string>
+
+    <string name="secondary_config_title">Tap this item to dynamically change the secondary content settings and compare the effects</string>
+    <string name="secondary_config_content">Current secondary content settings\nheaderSecondaryBehavior = SecondaryBehavior.%1$s\nfooterSecondaryBehavior = SecondaryBehavior.%2$s\nPreview secondary content\nheaderSecondaryPreview = %3$s\nfooterSecondaryPreview = %4$s</string>
+    <string name="toast_secondary_random">Secondary content settings randomized</string>
+    <string name="welcome_secondary_header">🎉 Welcome to the second floor 🎉</string>
+    <string name="header_secondary_desc">This is the Header secondary content area</string>
+    <string name="welcome_secondary_footer">🏠 Welcome to the basement 🏠</string>
+    <string name="footer_secondary_desc">This is the Footer secondary content area</string>
+    <string name="back_to_list">Back to list</string>
+
+    <string name="list_item_title">UltraSwipeRefresh list title %1$d</string>
+    <string name="list_item_content">UltraSwipeRefresh list content %1$d</string>
+    <string name="pull_refresh_list_title">PullRefresh list title %1$d</string>
+    <string name="pull_refresh_list_content">PullRefresh list content %1$d</string>
+    <string name="swipe_refresh_list_title">SwipeRefresh list title %1$d</string>
+    <string name="swipe_refresh_list_content">SwipeRefresh list content %1$d</string>
+    <string name="no_more_data">No more data</string>
+    <string name="lottie_bottom_line">———— The bottom ————</string>
+</resources>

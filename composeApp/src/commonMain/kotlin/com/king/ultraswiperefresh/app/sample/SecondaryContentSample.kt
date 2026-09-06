@@ -30,6 +30,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.king.ultraswiperefresh.NestedScrollMode
+import com.king.ultraswiperefresh.app.generated.resources.Res
+import com.king.ultraswiperefresh.app.generated.resources.back_to_list
+import com.king.ultraswiperefresh.app.generated.resources.footer_secondary_desc
+import com.king.ultraswiperefresh.app.generated.resources.header_secondary_desc
+import com.king.ultraswiperefresh.app.generated.resources.list_item_content
+import com.king.ultraswiperefresh.app.generated.resources.list_item_title
+import com.king.ultraswiperefresh.app.generated.resources.no_more_data
+import com.king.ultraswiperefresh.app.generated.resources.secondary_config_content
+import com.king.ultraswiperefresh.app.generated.resources.secondary_config_title
+import com.king.ultraswiperefresh.app.generated.resources.toast_secondary_random
+import com.king.ultraswiperefresh.app.generated.resources.welcome_secondary_footer
+import com.king.ultraswiperefresh.app.generated.resources.welcome_secondary_header
+import org.jetbrains.compose.resources.stringResource
 import com.king.ultraswiperefresh.SecondaryBehavior
 import com.king.ultraswiperefresh.UltraSwipeFooterState
 import com.king.ultraswiperefresh.UltraSwipeHeaderState
@@ -77,6 +90,7 @@ fun SecondaryContentSample() {
     }
 
     val toast = rememberToast()
+    val toastSecondaryRandom = stringResource(Res.string.toast_secondary_random)
 
     UltraSwipeRefresh(
         state = state,
@@ -137,18 +151,19 @@ fun SecondaryContentSample() {
         LazyColumn(Modifier.background(color = Color.White), state = lazyListState) {
             item {
                 ColumnItem(
-                    title = "点击此项可动态改变二级内容相关配置参数，体验效果差异",
-                    content = "当前所选的交互行为模式\n" +
-                        "headerSecondaryBehavior = SecondaryBehavior.${headerSecondaryBehavior.name}\n" +
-                        "footerSecondaryBehavior = SecondaryBehavior.${footerSecondaryBehavior.name}\n" +
-                        "是否可预览二级内容\n" +
-                        "headerSecondaryPreview = $secondaryPreview\n" +
-                        "footerSecondaryPreview = $secondaryPreview"
+                    title = stringResource(Res.string.secondary_config_title),
+                    content = stringResource(
+                        Res.string.secondary_config_content,
+                        headerSecondaryBehavior.name,
+                        footerSecondaryBehavior.name,
+                        secondaryPreview.toString(),
+                        secondaryPreview.toString()
+                    )
                 ) {
                     headerSecondaryBehavior = SecondaryBehavior.entries.random()
                     footerSecondaryBehavior = SecondaryBehavior.entries.random()
                     secondaryPreview = !secondaryPreview
-                    toast("二级内容行为交互模式已随机")
+                    toast(toastSecondaryRandom)
                 }
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -157,8 +172,8 @@ fun SecondaryContentSample() {
             }
             repeat(itemCount) {
                 item {
-                    val title = "UltraSwipeRefresh列表标题${it + 1}"
-                    val content = "UltraSwipeRefresh列表内容${it + 1}"
+                    val title = stringResource(Res.string.list_item_title, it + 1)
+                    val content = stringResource(Res.string.list_item_content, it + 1)
                     ColumnItem(title = title, content = content)
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = 16.dp),
@@ -270,13 +285,13 @@ private fun HeaderSecondaryContent(state: UltraSwipeRefreshState) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "🎉 欢迎来到二楼 🎉",
+                text = stringResource(Res.string.welcome_secondary_header),
                 color = Color.White,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "这里是Header二级内容区域",
+                text = stringResource(Res.string.header_secondary_desc),
                 color = Color.White,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(top = 16.dp)
@@ -288,7 +303,7 @@ private fun HeaderSecondaryContent(state: UltraSwipeRefreshState) {
                 },
                 modifier = Modifier.padding(top = 32.dp)
             ) {
-                Text("回到列表")
+                Text(stringResource(Res.string.back_to_list))
             }
         }
     }
@@ -308,13 +323,13 @@ private fun FooterSecondaryContent(state: UltraSwipeRefreshState) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "🏠 欢迎来到地下室 🏠",
+                text = stringResource(Res.string.welcome_secondary_footer),
                 color = Color.White,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "这里是Footer二级内容区域",
+                text = stringResource(Res.string.footer_secondary_desc),
                 color = Color.White,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(top = 16.dp)
@@ -326,7 +341,7 @@ private fun FooterSecondaryContent(state: UltraSwipeRefreshState) {
                 },
                 modifier = Modifier.padding(top = 32.dp)
             ) {
-                Text("回到列表")
+                Text(stringResource(Res.string.back_to_list))
             }
         }
     }

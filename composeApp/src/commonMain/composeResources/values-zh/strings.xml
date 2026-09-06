@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="back">← 返回</string>
+
+    <string name="screen_swipe_refresh_indicator_title">默认刷新样式示例</string>
+    <string name="screen_swipe_refresh_indicator_content">使用NestedScrollMode.FixedContent；特点：固定内容；即：内容固定，Header或 Footer进行滑动</string>
+    <string name="screen_classic_refresh_indicator_title">经典刷新样式示例</string>
+    <string name="screen_classic_refresh_indicator_content">使用NestedScrollMode.Translate；特点：平移； 即：Header或 Footer与内容一起滑动</string>
+    <string name="screen_classic_auto_load_title">经典刷新自动加载示例</string>
+    <string name="screen_classic_auto_load_content">使用NestedScrollMode.Translate；特点：平移； 即：Header或 Footer与内容一起滑动，并可自动加载更多</string>
+    <string name="screen_progress_refresh_indicator_title">进度条刷新样式示例</string>
+    <string name="screen_progress_refresh_indicator_content">使用NestedScrollMode.FixedFront；特点：固定在前面；即：Header或 Footer和内容都固定，仅改变状态</string>
+    <string name="screen_lottie_refresh_indicator_title">Lottie动画刷新样式示例</string>
+    <string name="screen_lottie_refresh_indicator_content">使用NestedScrollMode.FixedBehind；特点：固定在背后；即：Header或 Footer固定，仅内容滑动</string>
+    <string name="screen_custom_lottie_title">自定义Lottie动画刷新样式示例</string>
+    <string name="screen_custom_lottie_content">随机切换滑动模式，Header与Footer与内容的联动效果由滑动模式[NestedScrollMode]来决定</string>
+    <string name="screen_secondary_content_title">二级内容示例</string>
+    <string name="screen_secondary_content_content">下拉触发刷新阈值后可继续下拉进入Header二级内容（类似淘宝二楼），上拉触发加载阈值后可继续上拉进入Footer二级内容（地下室）示例</string>
+    <string name="screen_pull_refresh_title">Material中的Modifier.pullRefresh示例</string>
+    <string name="screen_pull_refresh_content">只支持下拉刷新，此示例主要用于与UltraSwipeRefresh进行效果对比（后续可能会移除）</string>
+    <string name="screen_swipe_refresh_title">Accompanist中的SwipeRefresh示例</string>
+    <string name="screen_swipe_refresh_content">只支持下拉刷新，此示例主要用于与UltraSwipeRefresh进行效果对比（后续可能会移除）</string>
+
+    <string name="intro_title">UltraSwipeRefresh：一个可带来极致体验的Compose刷新组件；支持下拉刷新和上拉加载，可完美替代官方的SwipeRefresh；功能更丰富，扩展性更强。</string>
+    <string name="intro_content">[headerIndicator] 和 [footerIndicator]可随意定制，并且[Header]和[Footer]样式与滑动模式可随意组合。</string>
+    <string name="random_mode_title">默认刷新样式 + 随机滑动模式</string>
+    <string name="random_mode_content">\n当前页所选的滑动模式\nheaderScrollMode = NestedScrollMode.%1$s\nfooterScrollMode = NestedScrollMode.%2$s\n点击此项会随机修改当前页Header和Footer的滑动模式</string>
+    <string name="toast_vibration_enabled">已全局启用振动效果</string>
+    <string name="toast_vibration_disabled">已全局关闭振动效果</string>
+    <string name="toast_random_mode">滑动模式已随机</string>
+    <string name="custom_lottie_random_title">点击此项可随机切换滑动模式</string>
+    <string name="custom_lottie_random_content">当前所选的滑动模式\nheaderScrollMode = NestedScrollMode.%1$s\nfooterScrollMode = NestedScrollMode.%2$s</string>
+
+    <string name="secondary_config_title">点击此项可动态改变二级内容相关配置参数，体验效果差异</string>
+    <string name="secondary_config_content">当前所选的交互行为模式\nheaderSecondaryBehavior = SecondaryBehavior.%1$s\nfooterSecondaryBehavior = SecondaryBehavior.%2$s\n是否可预览二级内容\nheaderSecondaryPreview = %3$s\nfooterSecondaryPreview = %4$s</string>
+    <string name="toast_secondary_random">二级内容行为交互模式已随机</string>
+    <string name="welcome_secondary_header">🎉 欢迎来到二楼 🎉</string>
+    <string name="header_secondary_desc">这里是Header二级内容区域</string>
+    <string name="welcome_secondary_footer">🏠 欢迎来到地下室 🏠</string>
+    <string name="footer_secondary_desc">这里是Footer二级内容区域</string>
+    <string name="back_to_list">回到列表</string>
+
+    <string name="list_item_title">UltraSwipeRefresh列表标题%1$d</string>
+    <string name="list_item_content">UltraSwipeRefresh列表内容%1$d</string>
+    <string name="pull_refresh_list_title">PullRefresh列表标题%1$d</string>
+    <string name="pull_refresh_list_content">PullRefresh列表内容%1$d</string>
+    <string name="swipe_refresh_list_title">SwipeRefresh列表标题%1$d</string>
+    <string name="swipe_refresh_list_content">SwipeRefresh列表内容%1$d</string>
+    <string name="no_more_data">没有更多数据了</string>
+    <string name="lottie_bottom_line">———— 我是有底线的 ————</string>
+</resources>

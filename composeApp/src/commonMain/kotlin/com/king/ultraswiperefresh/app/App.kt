@@ -18,6 +18,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.king.ultraswiperefresh.app.generated.resources.Res
+import com.king.ultraswiperefresh.app.generated.resources.back
+import com.king.ultraswiperefresh.app.generated.resources.screen_classic_auto_load_content
+import com.king.ultraswiperefresh.app.generated.resources.screen_classic_auto_load_title
+import com.king.ultraswiperefresh.app.generated.resources.screen_classic_refresh_indicator_content
+import com.king.ultraswiperefresh.app.generated.resources.screen_classic_refresh_indicator_title
+import com.king.ultraswiperefresh.app.generated.resources.screen_custom_lottie_content
+import com.king.ultraswiperefresh.app.generated.resources.screen_custom_lottie_title
+import com.king.ultraswiperefresh.app.generated.resources.screen_lottie_refresh_indicator_content
+import com.king.ultraswiperefresh.app.generated.resources.screen_lottie_refresh_indicator_title
+import com.king.ultraswiperefresh.app.generated.resources.screen_progress_refresh_indicator_content
+import com.king.ultraswiperefresh.app.generated.resources.screen_progress_refresh_indicator_title
+import com.king.ultraswiperefresh.app.generated.resources.screen_pull_refresh_content
+import com.king.ultraswiperefresh.app.generated.resources.screen_pull_refresh_title
+import com.king.ultraswiperefresh.app.generated.resources.screen_secondary_content_content
+import com.king.ultraswiperefresh.app.generated.resources.screen_secondary_content_title
+import com.king.ultraswiperefresh.app.generated.resources.screen_swipe_refresh_indicator_content
+import com.king.ultraswiperefresh.app.generated.resources.screen_swipe_refresh_indicator_title
 import com.king.ultraswiperefresh.app.sample.ClassicRefreshAutoLoadSample
 import com.king.ultraswiperefresh.app.sample.ClassicRefreshIndicatorSample
 import com.king.ultraswiperefresh.app.sample.CustomLottieRefreshIndicatorSample
@@ -28,6 +46,7 @@ import com.king.ultraswiperefresh.app.sample.SecondaryContentSample
 import com.king.ultraswiperefresh.app.sample.SwipeRefreshIndicatorSample
 import com.king.ultraswiperefresh.app.sample.UltraSwipeRefreshSample
 import com.king.ultraswiperefresh.app.ui.theme.RefreshLayoutTheme
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * 示例条目
@@ -51,7 +70,7 @@ fun App() {
     RefreshLayoutTheme {
         Surface(modifier = Modifier.fillMaxSize(), color = Color.White) {
             var currentName by remember { mutableStateOf<String?>(null) }
-            val screens = remember { ultraSwipeRefreshScreens() + platformExtraScreens() }
+            val screens = ultraSwipeRefreshScreens() + platformExtraScreens()
             val current = screens.firstOrNull { it.name == currentName }
             if (current == null) {
                 UltraSwipeRefreshSample(
@@ -65,7 +84,7 @@ fun App() {
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         TextButton(onClick = { currentName = null }) {
-                            Text(text = "← Back")
+                            Text(text = stringResource(Res.string.back))
                         }
                         Text(text = current.title, fontSize = 16.sp)
                     }
@@ -78,53 +97,54 @@ fun App() {
     }
 }
 
+@Composable
 private fun ultraSwipeRefreshScreens(): List<DemoScreen> = listOf(
     DemoScreen(
         name = "SwipeRefreshIndicatorSample",
-        title = "默认刷新样式示例",
-        content = "使用NestedScrollMode.FixedContent；特点：固定内容；即：内容固定，Header或 Footer进行滑动",
+        title = stringResource(Res.string.screen_swipe_refresh_indicator_title),
+        content = stringResource(Res.string.screen_swipe_refresh_indicator_content),
         screen = { SwipeRefreshIndicatorSample() },
     ),
     DemoScreen(
         name = "ClassicRefreshIndicatorSample",
-        title = "经典刷新样式示例",
-        content = "使用NestedScrollMode.Translate；特点：平移； 即：Header或 Footer与内容一起滑动",
+        title = stringResource(Res.string.screen_classic_refresh_indicator_title),
+        content = stringResource(Res.string.screen_classic_refresh_indicator_content),
         screen = { ClassicRefreshIndicatorSample() },
     ),
     DemoScreen(
         name = "ClassicRefreshAutoLoadSample",
-        title = "经典刷新自动加载示例",
-        content = "使用NestedScrollMode.Translate；特点：平移； 即：Header或 Footer与内容一起滑动，并可自动加载更多",
+        title = stringResource(Res.string.screen_classic_auto_load_title),
+        content = stringResource(Res.string.screen_classic_auto_load_content),
         screen = { ClassicRefreshAutoLoadSample() },
     ),
     DemoScreen(
         name = "ProgressRefreshIndicatorSample",
-        title = "进度条刷新样式示例",
-        content = "使用NestedScrollMode.FixedFront；特点：固定在前面；即：Header或 Footer和内容都固定，仅改变状态",
+        title = stringResource(Res.string.screen_progress_refresh_indicator_title),
+        content = stringResource(Res.string.screen_progress_refresh_indicator_content),
         screen = { ProgressRefreshIndicatorSample() },
     ),
     DemoScreen(
         name = "LottieRefreshIndicatorSample",
-        title = "Lottie动画刷新样式示例",
-        content = "使用NestedScrollMode.FixedBehind；特点：固定在背后；即：Header或 Footer固定，仅内容滑动",
+        title = stringResource(Res.string.screen_lottie_refresh_indicator_title),
+        content = stringResource(Res.string.screen_lottie_refresh_indicator_content),
         screen = { LottieRefreshIndicatorSample() },
     ),
     DemoScreen(
         name = "CustomLottieRefreshIndicatorSample",
-        title = "自定义Lottie动画刷新样式示例",
-        content = "随机切换滑动模式，Header与Footer与内容的联动效果由滑动模式[NestedScrollMode]来决定",
+        title = stringResource(Res.string.screen_custom_lottie_title),
+        content = stringResource(Res.string.screen_custom_lottie_content),
         screen = { CustomLottieRefreshIndicatorSample() },
     ),
     DemoScreen(
         name = "SecondaryContentSample",
-        title = "二级内容示例",
-        content = "下拉触发刷新阈值后可继续下拉进入Header二级内容（类似淘宝二楼），上拉触发加载阈值后可继续上拉进入Footer二级内容（地下室）示例",
+        title = stringResource(Res.string.screen_secondary_content_title),
+        content = stringResource(Res.string.screen_secondary_content_content),
         screen = { SecondaryContentSample() },
     ),
     DemoScreen(
         name = "PullRefreshSample",
-        title = "Material中的Modifier.pullRefresh示例",
-        content = "只支持下拉刷新，此示例主要用于与UltraSwipeRefresh进行效果对比（后续可能会移除）",
+        title = stringResource(Res.string.screen_pull_refresh_title),
+        content = stringResource(Res.string.screen_pull_refresh_content),
         screen = { PullRefreshSample() },
     ),
 )

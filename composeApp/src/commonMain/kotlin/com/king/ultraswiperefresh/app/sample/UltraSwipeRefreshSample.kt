@@ -19,11 +19,20 @@ import com.king.ultraswiperefresh.UltraSwipeRefresh
 import com.king.ultraswiperefresh.app.DemoScreen
 import com.king.ultraswiperefresh.app.component.ColumnItem
 import com.king.ultraswiperefresh.app.ext.rememberToast
+import com.king.ultraswiperefresh.app.generated.resources.Res
+import com.king.ultraswiperefresh.app.generated.resources.intro_content
+import com.king.ultraswiperefresh.app.generated.resources.intro_title
+import com.king.ultraswiperefresh.app.generated.resources.random_mode_content
+import com.king.ultraswiperefresh.app.generated.resources.random_mode_title
+import com.king.ultraswiperefresh.app.generated.resources.toast_random_mode
+import com.king.ultraswiperefresh.app.generated.resources.toast_vibration_disabled
+import com.king.ultraswiperefresh.app.generated.resources.toast_vibration_enabled
 import com.king.ultraswiperefresh.indicator.SwipeRefreshFooter
 import com.king.ultraswiperefresh.indicator.SwipeRefreshHeader
 import com.king.ultraswiperefresh.theme.UltraSwipeRefreshTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * UltraSwipeRefresh 示例
@@ -47,6 +56,9 @@ fun UltraSwipeRefreshSample(screens: List<DemoScreen>, openScreen: (String) -> U
     }
 
     val toast = rememberToast()
+    val toastVibrationEnabled = stringResource(Res.string.toast_vibration_enabled)
+    val toastVibrationDisabled = stringResource(Res.string.toast_vibration_disabled)
+    val toastRandomMode = stringResource(Res.string.toast_random_mode)
 
     UltraSwipeRefresh(
         isRefreshing = isRefreshing,
@@ -85,16 +97,16 @@ fun UltraSwipeRefreshSample(screens: List<DemoScreen>, openScreen: (String) -> U
 
             item {
                 ColumnItem(
-                    title = "UltraSwipeRefresh：一个可带来极致体验的Compose刷新组件；支持下拉刷新和上拉加载，可完美替代官方的SwipeRefresh；功能更丰富，扩展性更强。",
-                    content = "[headerIndicator] 和 [footerIndicator]可随意定制，并且[Header]和[Footer]样式与滑动模式可随意组合。"
+                    title = stringResource(Res.string.intro_title),
+                    content = stringResource(Res.string.intro_content)
                 ) {
                     val vibrateEnabled = !UltraSwipeRefreshTheme.config.vibrationEnabled
                     UltraSwipeRefreshTheme.config =
                         UltraSwipeRefreshTheme.config.copy(vibrationEnabled = vibrateEnabled)
                     if (vibrateEnabled) {
-                        toast("已全局启用振动效果")
+                        toast(toastVibrationEnabled)
                     } else {
-                        toast("已全局关闭振动效果")
+                        toast(toastVibrationDisabled)
                     }
                 }
                 HorizontalDivider(
@@ -106,15 +118,16 @@ fun UltraSwipeRefreshSample(screens: List<DemoScreen>, openScreen: (String) -> U
             item {
                 val nestedScrollModes = remember { NestedScrollMode.entries }
                 ColumnItem(
-                    title = "默认刷新样式 + 随机滑动模式",
-                    content = "\n当前页所选的滑动模式\n" +
-                            "headerScrollMode = NestedScrollMode.${headerScrollMode.name}\n" +
-                            "footerScrollMode = NestedScrollMode.${footerScrollMode.name}\n" +
-                            "点击此项会随机修改当前页Header和Footer的滑动模式"
+                    title = stringResource(Res.string.random_mode_title),
+                    content = stringResource(
+                        Res.string.random_mode_content,
+                        headerScrollMode.name,
+                        footerScrollMode.name
+                    )
                 ) {
                     headerScrollMode = nestedScrollModes.random()
                     footerScrollMode = nestedScrollModes.random()
-                    toast("滑动模式已随机")
+                    toast(toastRandomMode)
                 }
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 16.dp),

@@ -22,6 +22,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
+import com.king.ultraswiperefresh.app.generated.resources.Res
+import com.king.ultraswiperefresh.app.generated.resources.custom_lottie_random_content
+import com.king.ultraswiperefresh.app.generated.resources.custom_lottie_random_title
+import com.king.ultraswiperefresh.app.generated.resources.list_item_content
+import com.king.ultraswiperefresh.app.generated.resources.list_item_title
+import com.king.ultraswiperefresh.app.generated.resources.no_more_data
+import com.king.ultraswiperefresh.app.generated.resources.toast_random_mode
+import org.jetbrains.compose.resources.stringResource
 import com.king.ultraswiperefresh.app.ext.ResourceLottieSpec
 import com.king.ultraswiperefresh.NestedScrollMode
 import com.king.ultraswiperefresh.UltraSwipeRefresh
@@ -44,6 +52,7 @@ import kotlinx.coroutines.launch
 fun CustomLottieRefreshIndicatorSample() {
 
     val toast = rememberToast()
+    val toastRandomMode = stringResource(Res.string.toast_random_mode)
 
     val state = rememberUltraSwipeRefreshState()
     var itemCount by remember { mutableIntStateOf(20) }
@@ -105,14 +114,16 @@ fun CustomLottieRefreshIndicatorSample() {
             item {
                 val nestedScrollModes = remember { NestedScrollMode.values() }
                 ColumnItem(
-                    title = "点击此项可随机切换滑动模式",
-                    content = "当前所选的滑动模式\n" +
-                        "headerScrollMode = NestedScrollMode.${headerScrollMode.name}\n" +
-                        "footerScrollMode = NestedScrollMode.${footerScrollMode.name}"
+                    title = stringResource(Res.string.custom_lottie_random_title),
+                    content = stringResource(
+                        Res.string.custom_lottie_random_content,
+                        headerScrollMode.name,
+                        footerScrollMode.name
+                    )
                 ) {
                     headerScrollMode = nestedScrollModes.random()
                     footerScrollMode = nestedScrollModes.random()
-                    toast("滑动模式已随机")
+                    toast(toastRandomMode)
                 }
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -121,8 +132,8 @@ fun CustomLottieRefreshIndicatorSample() {
             }
             repeat(itemCount) {
                 item {
-                    val title = "UltraSwipeRefresh列表标题${it + 1}"
-                    val content = "UltraSwipeRefresh列表内容${it + 1}"
+                    val title = stringResource(Res.string.list_item_title, it + 1)
+                    val content = stringResource(Res.string.list_item_content, it + 1)
                     ColumnItem(title = title, content = content)
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = 16.dp),
@@ -135,7 +146,7 @@ fun CustomLottieRefreshIndicatorSample() {
                 item {
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         Text(
-                            text = "没有更多数据了",
+                            text = stringResource(Res.string.no_more_data),
                             color = Color(0xFF999999),
                             fontSize = 15.sp,
                             modifier = Modifier.padding(vertical = 16.dp)

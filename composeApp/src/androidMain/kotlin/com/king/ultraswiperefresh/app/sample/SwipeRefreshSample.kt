@@ -17,6 +17,10 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.king.ultraswiperefresh.app.component.ColumnItem
+import com.king.ultraswiperefresh.app.generated.resources.Res
+import com.king.ultraswiperefresh.app.generated.resources.swipe_refresh_list_content
+import com.king.ultraswiperefresh.app.generated.resources.swipe_refresh_list_title
+import org.jetbrains.compose.resources.stringResource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -50,8 +54,8 @@ fun SwipeRefreshSample() {
         LazyColumn(Modifier.background(color = Color.White)) {
             repeat(itemCount) {
                 item {
-                    val title = "SwipeRefresh列表标题${it + 1}"
-                    val content = "SwipeRefresh列表内容${it + 1}"
+                    val title = stringResource(Res.string.swipe_refresh_list_title, it + 1)
+                    val content = stringResource(Res.string.swipe_refresh_list_content, it + 1)
                     ColumnItem(title = title, content = content)
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = 16.dp),
