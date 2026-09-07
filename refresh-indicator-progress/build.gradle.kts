@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.dokka)
-    `maven-publish`
+    alias(libs.plugins.maven.publish)
 }
 
 kotlin {
@@ -39,6 +39,15 @@ kotlin {
             api(project(":refresh"))
             implementation(libs.compose.foundation)
         }
+    }
+}
+
+mavenPublishing {
+    // 发布到 Maven Central（Central Portal）；CI 使用 publishAndReleaseToMavenCentral 完成发布+自动 Release
+    publishToMavenCentral()
+    // 仅当提供了签名密钥时启用签名（CI 注入 signingInMemoryKey；本地无密钥时跳过）
+    if (providers.gradleProperty("signingInMemoryKey").isPresent) {
+        signAllPublications()
     }
 }
 

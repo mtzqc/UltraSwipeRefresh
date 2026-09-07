@@ -4,8 +4,8 @@
 - **重大变更：项目全面迁移至 Kotlin Multiplatform**，支持平台：Android、iOS（arm64/Simulator）、Desktop（Windows/macOS/Linux）、macOS（arm64）、JS、Wasm
 - 更新Kotlin至v2.3.20 (v1.9.20 -> v2.3.20)；Compose改用Compose Multiplatform v1.11.1
 - minSdk变更为24（v21 -> v24，由Compottie依赖要求）
-- **发布渠道变更**：改由 GitHub Packages 发布（消费者需配置认证，详见README）；Maven Central上的旧版本不再更新
-- 发布渠道说明：除 GitHub Packages 主渠道外，新增 [JitPack](https://jitpack.io/#jenly1314/UltraSwipeRefresh) 匿名备选下载渠道（依赖坐标相同）
+- 现有 Maven Central 上的 v1.x 产物仍可继续使用，但不再更新
+- **发布渠道说明**：2.x 起继续通过 Maven Central（Central Portal）发布，消费方式不变；KMP 产物不支持 JitPack，移除 jitpack 渠道相关配置
 - `refresh-indicator-lottie`：lottie-compose替换为[Compottie](https://github.com/alexzhirkevich/compottie) v2.2.4（多平台）；公共API中`LottieCompositionSpec`类型随Compottie变化，`RawRes`/`Asset`不再可用——动画JSON建议放置于`commonMain/composeResources/files`后自行读取内容并以`LottieCompositionSpec.JsonString`构造（可参考库内`DefaultLottieSpec`实现）
 - 振动反馈改为跨平台expect/actual：Android沿用Vibrator、iOS使用UIKit触觉反馈、Desktop/JS/Wasm为no-op
 - 移除`androidx.annotation.FloatRange/IntRange`注解（公共API签名不受影响）

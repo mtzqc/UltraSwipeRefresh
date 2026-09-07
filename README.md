@@ -1,10 +1,9 @@
 # UltraSwipeRefresh
 
 [![MavenCentral](https://img.shields.io/maven-central/v/com.github.jenly1314.UltraSwipeRefresh/refresh?logo=sonatype)](https://repo1.maven.org/maven2/com/github/jenly1314/UltraSwipeRefresh)
-[![JitPack](https://img.shields.io/jitpack/v/github/jenly1314/UltraSwipeRefresh?logo=jitpack)](https://jitpack.io/#jenly1314/UltraSwipeRefresh)
 [![CI](https://img.shields.io/github/actions/workflow/status/jenly1314/UltraSwipeRefresh/build.yml?logo=github)](https://github.com/jenly1314/UltraSwipeRefresh/actions/workflows/build.yml)
 [![Download](https://img.shields.io/badge/download-APK-brightgreen?logo=github)](https://raw.githubusercontent.com/jenly1314/UltraSwipeRefresh/master/composeApp/release/app-release.apk)
-[![API](https://img.shields.io/badge/API-21%2B-brightgreen?logo=android)](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels)
+[![API](https://img.shields.io/badge/API-24%2B-brightgreen?logo=android)](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels)
 [![License](https://img.shields.io/github/license/jenly1314/UltraSwipeRefresh?logo=open-source-initiative)](https://opensource.org/licenses/mit)
 
 **UltraSwipeRefresh**：一个可带来极致体验的 **Compose** 刷新组件；支持下拉刷新和上拉加载，可完美替代官方的 **SwipeRefresh**；功能更丰富，扩展性更强。
@@ -39,30 +38,9 @@
 
 ### Gradle:
 
-1. 在Project的 **build.gradle.kts** 或 **settings.gradle.kts** 中添加远程仓库
+1. 自 v2.0.0 起发布至 Maven Central（Central Portal），无需额外配置仓库。旧版本（1.x）的消费者无需变更。
 
-    > **注意**：自 v2.0.0 起改由 GitHub Packages 发布。GitHub Packages 的 Maven 仓库即使公开包也需要认证下载，
-    > 消费者需准备一个具备 `read:packages` 权限的 [GitHub PAT](https://github.com/settings/tokens)。
-
-    ```kotlin
-    repositories {
-        //...
-        maven {
-            url = uri("https://maven.pkg.github.com/jenly1314/UltraSwipeRefresh")
-            credentials {
-                username = findProperty("gpr.user") as String?   // GitHub 用户名，或环境变量 GITHUB_ACTOR
-                password = findProperty("gpr.key") as String?    // GitHub PAT，或环境变量 GITHUB_TOKEN
-            }
-        }
-    }
-    ```
-
-   并在本机的 **~/.gradle/gradle.properties** 中配置凭证：
-
-    ```properties
-    gpr.user=你的GitHub用户名
-    gpr.key=你的GitHub PAT
-    ```
+    > 自 v2.0.0 起坐标不变：`com.github.jenly1314.UltraSwipeRefresh`。Maven Central 已内置在 Gradle 默认仓库中，可直接引入依赖。
 
 2. 在Module的 **build.gradle** 中添加依赖项
 
@@ -82,32 +60,8 @@
 
 - Lottie 指示器内部改用 [Compottie](https://github.com/alexzhirkevich/compottie)（多平台），公共API中的 `LottieCompositionSpec` 类型随之变化：`RawRes`/`Asset` 不再可用，动画JSON建议放置于 `commonMain/composeResources/files`，通过 `LottieCompositionSpec.JsonString` 加载（参考库内 `DefaultLottieSpec` 实现）
 - minSdk 由 21 提升至 24
-- 现有 Maven Central 上的 v1.x 产物仍可继续使用，但不再更新
 
-#### 渠道说明
-
-| 渠道 | 版本 | 是否需要认证 |
-|---|---|---|
-| Maven Central | 仅 1.x（遗留，不再更新） | 否 |
-| **GitHub Packages** | **2.x 起（主渠道）** | **是（`read:packages` PAT）** |
-| JitPack | 2.x 起（备选） | 否 |
-
-#### JitPack 备选渠道
-
-如果无法配置 GitHub PAT，可以使用 JitPack 作为匿名下载渠道（依赖坐标与 GitHub Packages 完全相同）：
-
-1. 在Project的 **build.gradle.kts** 或 **settings.gradle.kts** 中添加远程仓库
-
-    ```kotlin
-    repositories {
-        //...
-        maven("https://jitpack.io")
-    }
-    ```
-
-2. 依赖坐标不变，直接按上方方式引入即可
-
-> 注：JitPack 的产物由 JitPack 在其环境中构建，可用性以 [JitPack 构建状态](https://jitpack.io/#jenly1314/UltraSwipeRefresh) 为准。
+> 注：Kotlin Multiplatform 产物不支持通过 JitPack 发布，故 2.x 起不提供 JitPack 渠道；请直接从 Maven Central 引入。
 
 ## 使用
 

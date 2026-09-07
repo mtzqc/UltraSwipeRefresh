@@ -1,4 +1,0 @@
-# JitPack 构建配置：构建 KMP 多平台产物（Android/JVM/iOS/macOS/JS/Wasm）
-# 实际工具链由 Gradle wrapper (8.14.5) 决定；JDK 17 满足 Kotlin 2.3 与 AGP 8.13 要求
-jdk:
-  - openjdk17

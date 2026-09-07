@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       publish:
-        description: 'Publish to GitHub Packages.'
+        description: 'Publish to Maven Central.'
         required: true
         type: boolean
         default: false
@@ -20,28 +20,14 @@ on:
 jobs:
   publish:
     if: ${{ github.event.inputs.publish == 'true' }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version-file: '.github/workflows/.java-version'
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Publish to GitHub Packages
-        run: ./gradlew publish --no-daemon --stacktrace
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_ACTOR: ${{ github.actor }}
+    uses: jenly1314/actions/.github/workflows/reusable-publish.yml@v1
+    with:
+      java-version-file: '.github/workflows/.java-version'
+    secrets:
+      maven-username: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+      maven-password: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+      gpg-secret-key: ${{ secrets.GPG_SECRET_KEY }}
+      gpg-secret-passphrase: ${{ secrets.GPG_SECRET_PASSPHRASE }}
 
   release:
     permissions:
