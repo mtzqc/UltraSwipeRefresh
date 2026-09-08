@@ -49,3 +49,11 @@ subprojects {
         }
     }
 }
+
+// Dokka v2 多模块聚合：v1 的 dokkaHtmlMultiModule 隐式收集已移除，需显式声明聚合依赖
+dependencies {
+    dokka(project(":refresh"))
+    dokka(project(":refresh-indicator-classic"))
+    dokka(project(":refresh-indicator-progress"))
+    dokka(project(":refresh-indicator-lottie"))
+}

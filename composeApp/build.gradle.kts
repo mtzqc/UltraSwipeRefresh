@@ -44,7 +44,7 @@ kotlin {
         }
 
         iosMain.dependencies {
-            implementation(compose.ui)
+            implementation(libs.compose.material)
         }
 
         androidMain.dependencies {
