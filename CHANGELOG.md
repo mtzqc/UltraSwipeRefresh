@@ -1,5 +1,10 @@
 ## 版本日志
 
+#### v2.0.1 ：2026-9-8
+- 修复：经典指示器松开刷新时文字大小变化的抖动问题
+- 文档：适配 Dokka v2 聚合任务，修复 API 文档生成
+- 说明：v2.0.0 曾因发布流程重复上传在 Central Portal 产生残留记录，本版本为正式可用版本
+
 #### v2.0.0 ：2026-9-5
 - **重大变更：项目全面迁移至 Kotlin Multiplatform**，支持平台：Android、iOS（arm64/Simulator）、Desktop（Windows/macOS/Linux）、macOS（arm64）、JS、Wasm
 - 更新Kotlin至v2.3.20 (v1.9.20 -> v2.3.20)；Compose改用Compose Multiplatform v1.11.1
