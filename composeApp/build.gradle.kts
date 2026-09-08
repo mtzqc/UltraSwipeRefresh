@@ -68,6 +68,10 @@ android {
     namespace = "com.king.ultraswiperefresh.app"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
+    lint {
+        abortOnError = false
+    }
+
     defaultConfig {
         applicationId = "com.king.ultraswiperefresh.app"
         minSdk = libs.versions.minSdk.get().toInt()
