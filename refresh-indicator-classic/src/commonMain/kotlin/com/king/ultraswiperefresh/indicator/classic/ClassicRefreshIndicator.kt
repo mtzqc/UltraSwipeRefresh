@@ -151,7 +151,8 @@ internal fun ClassicRefreshIndicator(
                 modifier = Modifier
                     .padding(horizontal = 6.dp)
                     .widthIn(min = tipMinWidth),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 BasicText(text = tipContent, style = tipContentStyle)
 
