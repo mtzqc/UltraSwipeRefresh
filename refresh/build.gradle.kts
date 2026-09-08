@@ -45,10 +45,8 @@ kotlin {
 mavenPublishing {
     // 发布到 Maven Central（Central Portal）；CI 使用 publishAndReleaseToMavenCentral 完成发布+自动 Release
     publishToMavenCentral()
-    // 仅当提供了签名密钥时启用签名（CI 注入 signingInMemoryKey；本地无密钥时跳过）
-    if (providers.gradleProperty("signingInMemoryKey").isPresent) {
-        signAllPublications()
-    }
+    // 签名由插件根据属性自动配置：CI 传 RELEASE_SIGNING_ENABLED=true 时自动启用签名，本地不传则不签名。
+    // 勿在此手动调用 signAllPublications()：插件的自动配置路径会先 finalize signing 属性，二次 set 抛 IllegalStateException。
 }
 
 android {
