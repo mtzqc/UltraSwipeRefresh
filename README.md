@@ -1,10 +1,15 @@
 # UltraSwipeRefresh
 
-[![MavenCentral](https://img.shields.io/maven-central/v/com.github.jenly1314.UltraSwipeRefresh/refresh?logo=sonatype)](https://repo1.maven.org/maven2/com/github/jenly1314/UltraSwipeRefresh)
-[![CI](https://img.shields.io/github/actions/workflow/status/jenly1314/UltraSwipeRefresh/build.yml?logo=github)](https://github.com/jenly1314/UltraSwipeRefresh/actions/workflows/build.yml)
-[![Download](https://img.shields.io/badge/download-APK-brightgreen?logo=github)](https://raw.githubusercontent.com/jenly1314/UltraSwipeRefresh/master/composeApp/release/app-release.apk)
+[![MavenCentral](https://img.shields.io/maven-central/v/io.github.mtzqc.UltraSwipeRefresh/refresh?logo=sonatype)](https://central.sonatype.com/namespace/io.github.mtzqc.UltraSwipeRefresh)
+[![CI](https://img.shields.io/github/actions/workflow/status/mtzqc/UltraSwipeRefresh/build.yml?logo=github)](https://github.com/mtzqc/UltraSwipeRefresh/actions/workflows/build.yml)
+[![Download](https://img.shields.io/badge/download-APK-brightgreen?logo=github)](https://raw.githubusercontent.com/mtzqc/UltraSwipeRefresh/master/composeApp/release/app-release.apk)
 [![API](https://img.shields.io/badge/API-24%2B-brightgreen?logo=android)](https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels)
-[![License](https://img.shields.io/github/license/jenly1314/UltraSwipeRefresh?logo=open-source-initiative)](https://opensource.org/licenses/mit)
+[![License](https://img.shields.io/github/license/mtzqc/UltraSwipeRefresh?logo=open-source-initiative)](https://opensource.org/licenses/mit)
+
+> [!IMPORTANT]
+> 本项目 Fork 自 [jenly1314/UltraSwipeRefresh](https://github.com/jenly1314/UltraSwipeRefresh)（原作者：[Jenly Yu](https://github.com/jenly1314/)），
+> 在此基础上完成了 **Kotlin Multiplatform 化改造**（新增 iOS/Desktop/JS/Wasm 支持）并发布至 Maven Central。
+> 感谢原作者的优秀工作，原始 Android 版本请移步[上游仓库](https://github.com/jenly1314/UltraSwipeRefresh)；本项目继续遵循 [MIT License](LICENSE) 开源。
 
 **UltraSwipeRefresh**：一个可带来极致体验的 **Compose** 刷新组件；支持下拉刷新和上拉加载，可完美替代官方的 **SwipeRefresh**；功能更丰富，扩展性更强。
 
@@ -21,7 +26,7 @@
 
 ![Image](art/UltraSwipeRefresh.gif)
 
-> 你也可以直接下载 [演示App](https://raw.githubusercontent.com/jenly1314/UltraSwipeRefresh/master/composeApp/release/app-release.apk) 体验效果
+> 你也可以直接下载 [演示App](https://raw.githubusercontent.com/mtzqc/UltraSwipeRefresh/master/composeApp/release/app-release.apk) 体验效果
 
 ## 平台支持
 
@@ -40,20 +45,20 @@
 
 1. 自 v2.0.0 起发布至 Maven Central（Central Portal），无需额外配置仓库。旧版本（1.x）的消费者无需变更。
 
-    > 自 v2.0.0 起坐标不变：`com.github.jenly1314.UltraSwipeRefresh`。Maven Central 已内置在 Gradle 默认仓库中，可直接引入依赖。
+    > 自 v2.0.0 起发布坐标变更为：`io.github.mtzqc.UltraSwipeRefresh`。Maven Central 已内置在 Gradle 默认仓库中，可直接引入依赖。
 
 2. 在Module的 **build.gradle** 中添加依赖项
 
     ```gradle
     // 极致体验的Compose刷新组件 (*必须)
-    implementation 'com.github.jenly1314.UltraSwipeRefresh:refresh:2.0.0'
+    implementation 'io.github.mtzqc.UltraSwipeRefresh:refresh:2.0.0'
 
     // 经典样式的指示器 (可选)
-    implementation 'com.github.jenly1314.UltraSwipeRefresh:refresh-indicator-classic:2.0.0'
+    implementation 'io.github.mtzqc.UltraSwipeRefresh:refresh-indicator-classic:2.0.0'
     // Lottie动画指示器 (可选)
-    implementation 'com.github.jenly1314.UltraSwipeRefresh:refresh-indicator-lottie:2.0.0'
+    implementation 'io.github.mtzqc.UltraSwipeRefresh:refresh-indicator-lottie:2.0.0'
     // 进度条样式的指示器 (可选)
-    implementation 'com.github.jenly1314.UltraSwipeRefresh:refresh-indicator-progress:2.0.0'
+    implementation 'io.github.mtzqc.UltraSwipeRefresh:refresh-indicator-progress:2.0.0'
     ```
 
 #### v2.0.0 迁移说明
@@ -213,18 +218,18 @@ UltraSwipeRefreshTheme.config = UltraSwipeRefreshTheme.config.copy(
 | SwipeRefreshHeader                                                                                    | ClassicRefreshHeader                                                                                                                                                                                           |
 | ![Image](art/SwipeRefreshIndicatorSample.gif)                                                         | ![Image](art/ClassicRefreshIndicatorSample.gif)                                                                                                                                                                |
 | SwipeRefreshFooter                                                                                    | ClassicRefreshFooter                                                                                                                                                                                           |
-| [官方默认的刷新样式示例](app/src/main/kotlin/com/king/ultraswiperefresh/app/sample/SwipeRefreshIndicatorSample.kt) | [经典刷新样式示例](app/src/main/kotlin/com/king/ultraswiperefresh/app/sample/ClassicRefreshIndicatorSample.kt)  /  [经典刷新自动加载示例](app/src/main/kotlin/com/king/ultraswiperefresh/app/sample/ClassicRefreshAutoLoadSample.kt) |
+| [官方默认的刷新样式示例](composeApp/src/commonMain/kotlin/com/king/ultraswiperefresh/app/sample/SwipeRefreshIndicatorSample.kt) | [经典刷新样式示例](composeApp/src/commonMain/kotlin/com/king/ultraswiperefresh/app/sample/ClassicRefreshIndicatorSample.kt)  /  [经典刷新自动加载示例](composeApp/src/commonMain/kotlin/com/king/ultraswiperefresh/app/sample/ClassicRefreshAutoLoadSample.kt) |
 
 | 进度条样式                                                                                           | Lottie动画样式                                                                                                                            |
 |:-----------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------|
 | ProgressRefreshHeader                                                                                | LottieRefreshHeader                                                                                                                   |
 | ![Image](art/ProgressRefreshIndicatorSample.gif)                                                     | ![Image](art/LottieRefreshIndicatorSample.gif)                                                                                        |
 | ProgressRefreshFooter                                                                                | LottieRefreshFooter                                                                                                                   |
-| [进度条刷新样式示例](app/src/main/kotlin/com/king/ultraswiperefresh/app/sample/ProgressRefreshIndicatorSample.kt) | [Lottie动画刷新样式示例](app/src/main/kotlin/com/king/ultraswiperefresh/app/sample/LottieRefreshIndicatorSample.kt)                                    |
+| [进度条刷新样式示例](composeApp/src/commonMain/kotlin/com/king/ultraswiperefresh/app/sample/ProgressRefreshIndicatorSample.kt) | [Lottie动画刷新样式示例](composeApp/src/commonMain/kotlin/com/king/ultraswiperefresh/app/sample/LottieRefreshIndicatorSample.kt)                                    |
 
 > 如果以上的指示器效果都不满足你的需求，你可以自定义去实现Header和Footer对应的指示器，也可以直接使用Lottie动画样式的指示器，来快速接入任何Lottie动画。
 
-更多使用详情，请查看[app](app)中的源码使用示例或直接查看 [API帮助文档](https://jenly1314.github.io/UltraSwipeRefresh/api/)
+更多使用详情，请查看[composeApp](composeApp)中的源码使用示例或直接查看 [API帮助文档](https://mtzqc.github.io/UltraSwipeRefresh/api/)
 
 ## 相关推荐
 
@@ -246,14 +251,4 @@ UltraSwipeRefreshTheme.config = UltraSwipeRefreshTheme.config.copy(
 
 ## 版本日志
 
-#### v1.6.0 ：2026-8-4
-- 更新compileSdk至35
-- 更新compose至v1.8.0 (v1.7.0 -> v1.8.0)
-- 更新Gradle至v8.9
-- 源码目录调整（src/main/java -> src/main/kotlin）
-
-#### [查看更多版本日志](CHANGELOG.md)
-
----
-
-![footer](https://jenly1314.github.io/page/footer.svg)
+#### [查看版本日志](CHANGELOG.md)

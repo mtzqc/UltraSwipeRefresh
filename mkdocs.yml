@@ -1,23 +1,23 @@
 # Project information
 site_name: UltraSwipeRefresh
-site_url: https://jenly1314.github.io/UltraSwipeRefresh/
-site_description: "UltraSwipeRefresh for Android"
-site_author: Jenly
+site_url: https://mtzqc.github.io/UltraSwipeRefresh/
+site_description: "UltraSwipeRefresh for Compose Multiplatform"
+site_author: mtzqc
 remote_branch: gh-pages
 edit_uri: ""
 
 # Repository
 repo_name: UltraSwipeRefresh
-repo_url: https://github.com/jenly1314/UltraSwipeRefresh
+repo_url: https://github.com/mtzqc/UltraSwipeRefresh
 
 # Copyright
-copyright: 'Copyright &copy; 2016 - 2026 Jenly'
+copyright: 'Copyright &copy; 2023 - 2026 Jenly Yu (original), 2026 mtzqc (KMP fork)'
 
 # Configuration
 theme:
   name: 'material'
-  favicon: https://jenly1314.github.io/favicon.png
-  logo: https://jenly1314.github.io/medias/logo.png
+  favicon: https://mtzqc.github.io/favicon.png
+  logo: https://mtzqc.github.io/medias/logo.png
   icon:
     repo: fontawesome/brands/github
   language: zh
@@ -46,13 +46,13 @@ extra:
   generator: false
   social:
     - icon: material/home-circle
-      link: https://jenly1314.github.io/
+      link: https://mtzqc.github.io/
     - icon: simple/github
-      link: https://github.com/jenly1314/
+      link: https://github.com/mtzqc/
     - icon: simple/gitee
-      link: https://gitee.com/jenly1314/
+      link: https://gitee.com/mtzqc/
     - icon: fontawesome/solid/paper-plane
-      link: mailto:jenly1314@gmail.com
+      link: mailto:mtzqc@foxmail.com
 
 markdown_extensions:
   - smarty
