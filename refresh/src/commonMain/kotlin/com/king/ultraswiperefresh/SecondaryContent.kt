@@ -27,50 +27,15 @@ internal fun HeaderSecondaryContent(
     headerSecondaryPreview: Boolean,
     headerSecondaryContent: (@Composable (UltraSwipeRefreshState) -> Unit)?,
 ) {
-    if (!headerSecondaryEnabled || headerSecondaryContent == null) return
-
-    val showHeaderSecondary by remember(state.headerState, headerSecondaryPreview) {
-        derivedStateOf {
-            when {
-                headerSecondaryEnabled -> {
-                    when {
-                        state.headerState == UltraSwipeHeaderState.Secondary -> true
-                        headerSecondaryPreview && state.headerState == UltraSwipeHeaderState.ReleaseToSecondary -> true
-                        else -> false
-                    }
-                }
-
-                else -> false
-            }
-        }
-    }
-
-    val headerTransaction = updateTransition(state.headerState == UltraSwipeHeaderState.Secondary)
-    val headerOffset by headerTransaction.animateFloat { if (it) 0f else -boxSize.height.toFloat() }
-
-    Box(
-        modifier = Modifier
-            .graphicsLayer {
-                translationY = if (headerSecondaryBehavior == SecondaryBehavior.Slide) {
-                    if (state.headerState == UltraSwipeHeaderState.ReleaseToSecondary) {
-                        -boxSize.height + state.indicatorOffset
-                    } else {
-                        headerOffset
-                    }
-                } else {
-                    0f
-                }
-            }
-            .zIndex(if (state.headerState == UltraSwipeHeaderState.Secondary) 1f else 0f)
-    ) {
-        AnimatedVisibility(
-            visible = showHeaderSecondary,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            headerSecondaryContent(state)
-        }
-    }
+    SecondaryContent(
+        state = state,
+        boxSize = boxSize,
+        isFooter = false,
+        secondaryEnabled = headerSecondaryEnabled,
+        secondaryBehavior = headerSecondaryBehavior,
+        secondaryPreview = headerSecondaryPreview,
+        secondaryContent = headerSecondaryContent,
+    )
 }
 
 /**
@@ -85,48 +50,76 @@ internal fun FooterSecondaryContent(
     footerSecondaryPreview: Boolean,
     footerSecondaryContent: (@Composable (UltraSwipeRefreshState) -> Unit)?,
 ) {
-    if (!footerSecondaryEnabled || footerSecondaryContent == null) return
+    SecondaryContent(
+        state = state,
+        boxSize = boxSize,
+        isFooter = true,
+        secondaryEnabled = footerSecondaryEnabled,
+        secondaryBehavior = footerSecondaryBehavior,
+        secondaryPreview = footerSecondaryPreview,
+        secondaryContent = footerSecondaryContent,
+    )
+}
 
-    val showFooterSecondary by remember(state.footerState, footerSecondaryPreview) {
+/**
+ * Header/Footer 二级内容的共享实现；二者交互互为镜像，仅状态字段与偏移方向不同
+ */
+@Composable
+private fun SecondaryContent(
+    state: UltraSwipeRefreshState,
+    boxSize: IntSize,
+    isFooter: Boolean,
+    secondaryEnabled: Boolean,
+    secondaryBehavior: SecondaryBehavior,
+    secondaryPreview: Boolean,
+    secondaryContent: (@Composable (UltraSwipeRefreshState) -> Unit)?,
+) {
+    if (!secondaryEnabled || secondaryContent == null) return
+
+    val isSecondary = if (isFooter) {
+        state.footerState == UltraSwipeFooterState.Secondary
+    } else {
+        state.headerState == UltraSwipeHeaderState.Secondary
+    }
+    val isReleaseToSecondary = if (isFooter) {
+        state.footerState == UltraSwipeFooterState.ReleaseToSecondary
+    } else {
+        state.headerState == UltraSwipeHeaderState.ReleaseToSecondary
+    }
+
+    val showSecondary by remember(isReleaseToSecondary, secondaryPreview) {
         derivedStateOf {
-            when {
-                footerSecondaryEnabled -> {
-                    when {
-                        state.footerState == UltraSwipeFooterState.Secondary -> true
-                        footerSecondaryPreview && state.footerState == UltraSwipeFooterState.ReleaseToSecondary -> true
-                        else -> false
-                    }
-                }
-
-                else -> false
-            }
+            isSecondary || (secondaryPreview && isReleaseToSecondary)
         }
     }
 
-    val footerTransaction = updateTransition(state.footerState == UltraSwipeFooterState.Secondary)
-    val footerOffset by footerTransaction.animateFloat { if (it) 0f else boxSize.height.toFloat() }
+    val transition = updateTransition(isSecondary)
+    val hiddenOffset by transition.animateFloat {
+        if (it) 0f else if (isFooter) boxSize.height.toFloat() else -boxSize.height.toFloat()
+    }
 
     Box(
         modifier = Modifier
             .graphicsLayer {
-                translationY = if (footerSecondaryBehavior == SecondaryBehavior.Slide) {
-                    if (state.footerState == UltraSwipeFooterState.ReleaseToSecondary) {
-                        boxSize.height + state.indicatorOffset
+                translationY = if (secondaryBehavior == SecondaryBehavior.Slide) {
+                    if (isReleaseToSecondary) {
+                        if (isFooter) boxSize.height + state.indicatorOffset
+                        else -boxSize.height + state.indicatorOffset
                     } else {
-                        footerOffset
+                        hiddenOffset
                     }
                 } else {
                     0f
                 }
             }
-            .zIndex(if (state.footerState == UltraSwipeFooterState.Secondary) 1f else 0f)
+            .zIndex(if (isSecondary) 1f else 0f)
     ) {
         AnimatedVisibility(
-            visible = showFooterSecondary,
+            visible = showSecondary,
             enter = fadeIn(),
             exit = fadeOut()
         ) {
-            footerSecondaryContent(state)
+            secondaryContent(state)
         }
     }
 }

@@ -23,6 +23,9 @@ private class IosVibratorController : VibratorController {
 
     override fun hasVibrator(): Boolean = true
 
+    /**
+     * iOS 使用 UIKit 触觉反馈，不按毫秒计时；[millis] 被忽略，固定触发一次 impact 反馈
+     */
     override fun vibrate(millis: Long) {
         generator.impactOccurred()
     }

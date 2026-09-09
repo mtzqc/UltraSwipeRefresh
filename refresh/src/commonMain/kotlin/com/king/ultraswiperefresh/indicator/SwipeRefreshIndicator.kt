@@ -138,7 +138,7 @@ internal fun SwipeRefreshIndicator(
     val sizes = remember(largeIndication) { if (largeIndication) largeSizes else defaultSizes }
     val indicatorHeight = with(LocalDensity.current) { remember(sizes) { sizes.size.roundToPx() } }
 
-    val slingshot = rememberUpdatedSlingshot(
+    val slingshot = calculateSlingshot(
         offsetY = if (isFooter) -state.indicatorOffset else state.indicatorOffset,
         maxOffsetY = if (isFooter) -state.loadMoreTrigger else state.refreshTrigger,
         height = indicatorHeight,
