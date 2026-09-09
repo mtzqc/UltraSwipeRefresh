@@ -51,14 +51,14 @@
 
     ```gradle
     // 极致体验的Compose刷新组件 (*必须)
-    implementation 'io.github.mtzqc.UltraSwipeRefresh:refresh:2.0.1'
+    implementation 'io.github.mtzqc.UltraSwipeRefresh:refresh:2.0.2'
 
     // 经典样式的指示器 (可选)
-    implementation 'io.github.mtzqc.UltraSwipeRefresh:refresh-indicator-classic:2.0.1'
+    implementation 'io.github.mtzqc.UltraSwipeRefresh:refresh-indicator-classic:2.0.2'
     // Lottie动画指示器 (可选)
-    implementation 'io.github.mtzqc.UltraSwipeRefresh:refresh-indicator-lottie:2.0.1'
+    implementation 'io.github.mtzqc.UltraSwipeRefresh:refresh-indicator-lottie:2.0.2'
     // 进度条样式的指示器 (可选)
-    implementation 'io.github.mtzqc.UltraSwipeRefresh:refresh-indicator-progress:2.0.1'
+    implementation 'io.github.mtzqc.UltraSwipeRefresh:refresh-indicator-progress:2.0.2'
     ```
 
 #### v2.0.0 迁移说明
