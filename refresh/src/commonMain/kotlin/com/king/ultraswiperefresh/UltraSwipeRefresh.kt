@@ -105,185 +105,184 @@ fun UltraSwipeRefresh(
     val coroutineScope = rememberCoroutineScope()
     val updatedOnRefresh = rememberUpdatedState(onRefresh)
     val updatedOnLoadMore = rememberUpdatedState(onLoadMore)
+    val heights = rememberIndicatorHeights()
 
     Box(modifier) {
-        RefreshSubComposeLayout(
-            headerIndicator = {
-                headerIndicator(state)
-            },
-            footerIndicator = {
-                footerIndicator(state)
-            },
-        ) { headerHeight, footerHeight ->
+        val nestedScrollConnection = remember(state, coroutineScope) {
+            UltraSwipeRefreshNestedScrollConnection(
+                state = state,
+                coroutineScope = coroutineScope,
+                onRefresh = {
+                    updatedOnRefresh.value.invoke()
+                },
+                onLoadMore = {
+                    updatedOnLoadMore.value.invoke()
+                })
+        }.apply {
+            this.dragMultiplier = dragMultiplier
+            this.refreshEnabled = refreshEnabled
+            this.loadMoreEnabled = loadMoreEnabled
+            this.alwaysScrollable = alwaysScrollable
+            this.headerSecondaryEnabled = headerSecondaryEnabled
+            this.footerSecondaryEnabled = footerSecondaryEnabled
+        }
 
-            val nestedScrollConnection = remember(state, coroutineScope) {
-                UltraSwipeRefreshNestedScrollConnection(
-                    state = state,
-                    coroutineScope = coroutineScope,
-                    onRefresh = {
-                        updatedOnRefresh.value.invoke()
-                    },
-                    onLoadMore = {
-                        updatedOnLoadMore.value.invoke()
-                    })
-            }.apply {
-                this.dragMultiplier = dragMultiplier
-                this.refreshEnabled = refreshEnabled
-                this.loadMoreEnabled = loadMoreEnabled
-                this.alwaysScrollable = alwaysScrollable
-                this.headerSecondaryEnabled = headerSecondaryEnabled
-                this.footerSecondaryEnabled = footerSecondaryEnabled
+        SideEffect {
+            val headerHeight = heights.headerHeight
+            val footerHeight = heights.footerHeight
+            state.refreshTrigger = headerHeight.times(refreshTriggerRate).coerceAtLeast(1f)
+            state.loadMoreTrigger = -(footerHeight.times(loadMoreTriggerRate).coerceAtLeast(1f))
+            state.headerMaxOffset = headerHeight.times(headerMaxOffsetRate)
+            state.footerMinOffset = -footerHeight.times(footerMaxOffsetRate)
+
+            // 二级触发阈值
+            if (headerSecondaryEnabled) {
+                state.headerSecondaryTrigger =
+                    headerHeight.times(headerSecondaryTriggerRate).coerceAtLeast(1f)
+                // 确保 headerMaxOffset 能超过二级触发点
+                state.headerMaxOffset =
+                    maxOf(state.headerMaxOffset, state.headerSecondaryTrigger)
+            } else {
+                state.headerSecondaryTrigger = Float.MAX_VALUE
             }
-
-            SideEffect {
-                state.refreshTrigger = headerHeight.times(refreshTriggerRate).coerceAtLeast(1f)
-                state.loadMoreTrigger = -(footerHeight.times(loadMoreTriggerRate).coerceAtLeast(1f))
-                state.headerMaxOffset = headerHeight.times(headerMaxOffsetRate)
-                state.footerMinOffset = -footerHeight.times(footerMaxOffsetRate)
-
-                // 二级触发阈值
-                if (headerSecondaryEnabled) {
-                    state.headerSecondaryTrigger =
-                        headerHeight.times(headerSecondaryTriggerRate).coerceAtLeast(1f)
-                    // 确保 headerMaxOffset 能超过二级触发点
-                    state.headerMaxOffset =
-                        maxOf(state.headerMaxOffset, state.headerSecondaryTrigger)
-                } else {
-                    state.headerSecondaryTrigger = Float.MAX_VALUE
-                }
-                if (footerSecondaryEnabled) {
-                    state.footerSecondaryTrigger =
-                        -(footerHeight.times(footerSecondaryTriggerRate).coerceAtLeast(1f))
-                    // 确保 footerMinOffset 能超过二级触发点
-                    state.footerMinOffset =
-                        minOf(state.footerMinOffset, state.footerSecondaryTrigger)
-                } else {
-                    state.footerSecondaryTrigger = Float.NEGATIVE_INFINITY
-                }
+            if (footerSecondaryEnabled) {
+                state.footerSecondaryTrigger =
+                    -(footerHeight.times(footerSecondaryTriggerRate).coerceAtLeast(1f))
+                // 确保 footerMinOffset 能超过二级触发点
+                state.footerMinOffset =
+                    minOf(state.footerMinOffset, state.footerSecondaryTrigger)
+            } else {
+                state.footerSecondaryTrigger = Float.NEGATIVE_INFINITY
             }
+        }
 
-            LaunchedEffect(
-                state.isSwipeInProgress,
-                state.isRefreshing,
-                state.isLoading,
-                state.isHeaderSecondary,
-                state.isFooterSecondary
-            ) {
-                if (!state.isSwipeInProgress) {
-                    when {
-                        state.isHeaderSecondary -> state.updateHeaderState()
-                        state.isFooterSecondary -> state.updateFooterState()
-                        state.isRefreshing -> state.animateOffsetTo(headerHeight.toFloat())
-                        state.isLoading -> state.animateOffsetTo(-footerHeight.toFloat())
-                        state.headerState == UltraSwipeHeaderState.Refreshing || state.footerState == UltraSwipeFooterState.Loading -> {
-                            coroutineScope.launch {
-                                state.isFinishing = true
-                                if (state.headerState == UltraSwipeHeaderState.Refreshing) {
-                                    state.animateOffsetTo(headerHeight.toFloat())
-                                } else if (state.footerState == UltraSwipeFooterState.Loading) {
-                                    state.animateOffsetTo(-footerHeight.toFloat())
-                                }
-                                delay(finishDelayMillis)
-                                onCollapseScroll?.also {
-                                    coroutineScope.launch {
-                                        it.invoke(-state.indicatorOffset)
-                                    }
-                                }
-                                state.animateOffsetTo(0f, MutatePriority.PreventUserInput)
+        LaunchedEffect(
+            state.isSwipeInProgress,
+            state.isRefreshing,
+            state.isLoading,
+            state.isHeaderSecondary,
+            state.isFooterSecondary,
+            heights.headerHeight,
+            heights.footerHeight
+        ) {
+            val headerHeight = heights.headerHeight
+            val footerHeight = heights.footerHeight
+            if (!state.isSwipeInProgress) {
+                when {
+                    state.isHeaderSecondary -> state.updateHeaderState()
+                    state.isFooterSecondary -> state.updateFooterState()
+                    state.isRefreshing -> state.animateOffsetTo(headerHeight.toFloat())
+                    state.isLoading -> state.animateOffsetTo(-footerHeight.toFloat())
+                    state.headerState == UltraSwipeHeaderState.Refreshing || state.footerState == UltraSwipeFooterState.Loading -> {
+                        coroutineScope.launch {
+                            state.isFinishing = true
+                            if (state.headerState == UltraSwipeHeaderState.Refreshing) {
+                                state.animateOffsetTo(headerHeight.toFloat())
+                            } else if (state.footerState == UltraSwipeFooterState.Loading) {
+                                state.animateOffsetTo(-footerHeight.toFloat())
                             }
+                            delay(finishDelayMillis)
+                            onCollapseScroll?.also {
+                                coroutineScope.launch {
+                                    it.invoke(-state.indicatorOffset)
+                                }
+                            }
+                            state.animateOffsetTo(0f, MutatePriority.PreventUserInput)
                         }
-
-                        else -> state.animateOffsetTo(0f)
                     }
+
+                    else -> state.animateOffsetTo(0f)
+                }
+            }
+        }
+
+        VibrationLaunchedEffect(vibrationEnabled, vibrationMillis, state)
+
+        val headerZIndex = remember(headerScrollMode) { obtainZIndex(headerScrollMode) }
+        val footerZIndex = remember(footerScrollMode) { obtainZIndex(footerScrollMode) }
+
+        var boxSize by remember { mutableStateOf(IntSize.Zero) }
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .onSizeChanged { boxSize = it }
+                .clipToBounds()
+        ) {
+            // Header 二级内容
+            HeaderSecondaryContent(
+                state = state,
+                boxSize = boxSize,
+                headerSecondaryEnabled = headerSecondaryEnabled,
+                headerSecondaryBehavior = headerSecondaryBehavior,
+                headerSecondaryPreview = headerSecondaryPreview,
+                headerSecondaryContent = headerSecondaryContent,
+            )
+
+            // Footer 二级内容
+            FooterSecondaryContent(
+                state = state,
+                boxSize = boxSize,
+                footerSecondaryEnabled = footerSecondaryEnabled,
+                footerSecondaryBehavior = footerSecondaryBehavior,
+                footerSecondaryPreview = footerSecondaryPreview,
+                footerSecondaryContent = footerSecondaryContent,
+            )
+
+            val secondaryTransaction = updateTransition(
+                Pair(
+                    state.headerState == UltraSwipeHeaderState.Secondary,
+                    state.footerState == UltraSwipeFooterState.Secondary
+                )
+            )
+
+            val contentOffsetProgress by secondaryTransaction.animateFloat {
+                when {
+                    it.first -> 1f
+                    it.second -> -1f
+                    else -> 0f
                 }
             }
 
-            VibrationLaunchedEffect(vibrationEnabled, vibrationMillis, state)
+            Box(modifier = Modifier.nestedScroll(nestedScrollConnection)) {
 
-            val headerZIndex = remember(headerScrollMode) { obtainZIndex(headerScrollMode) }
-            val footerZIndex = remember(footerScrollMode) { obtainZIndex(footerScrollMode) }
-
-            var boxSize by remember { mutableStateOf(IntSize.Zero) }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .onSizeChanged { boxSize = it }
-                    .clipToBounds()
-            ) {
-                // Header 二级内容
-                HeaderSecondaryContent(
-                    state = state,
-                    boxSize = boxSize,
-                    headerSecondaryEnabled = headerSecondaryEnabled,
-                    headerSecondaryBehavior = headerSecondaryBehavior,
-                    headerSecondaryPreview = headerSecondaryPreview,
-                    headerSecondaryContent = headerSecondaryContent,
-                )
-
-                // Footer 二级内容
-                FooterSecondaryContent(
-                    state = state,
-                    boxSize = boxSize,
-                    footerSecondaryEnabled = footerSecondaryEnabled,
-                    footerSecondaryBehavior = footerSecondaryBehavior,
-                    footerSecondaryPreview = footerSecondaryPreview,
-                    footerSecondaryContent = footerSecondaryContent,
-                )
-
-                val secondaryTransaction = updateTransition(
-                    Pair(
-                        state.headerState == UltraSwipeHeaderState.Secondary,
-                        state.footerState == UltraSwipeFooterState.Secondary
-                    )
-                )
-
-                val contentOffsetProgress by secondaryTransaction.animateFloat {
-                    when {
-                        it.first -> 1f
-                        it.second -> -1f
-                        else -> 0f
-                    }
+                // Header 指示器
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .onHeaderHeightChanged(heights)
+                        .graphicsLayer {
+                            translationY =
+                                obtainHeaderOffset(state, headerScrollMode, heights.headerHeight)
+                            alpha = if (contentOffsetProgress != 0f) 0f else 1f
+                        }
+                        .zIndex(headerZIndex)
+                ) {
+                    headerIndicator(state)
                 }
 
-                Box(modifier = Modifier.nestedScroll(nestedScrollConnection)) {
+                // Footer 指示器
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .onFooterHeightChanged(heights)
+                        .graphicsLayer {
+                            translationY =
+                                obtainFooterOffset(state, footerScrollMode, heights.footerHeight)
+                            alpha = if (contentOffsetProgress != 0f) 0f else 1f
+                        }
+                        .zIndex(footerZIndex)
+                ) {
+                    footerIndicator(state)
+                }
 
-                    // Header 指示器
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .graphicsLayer {
-                                translationY =
-                                    obtainHeaderOffset(state, headerScrollMode, headerHeight)
-                                alpha = if (contentOffsetProgress != 0f) 0f else 1f
-                            }
-                            .zIndex(headerZIndex)
-                    ) {
-                        headerIndicator(state)
-                    }
-
-                    // Footer 指示器
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .graphicsLayer {
-                                translationY =
-                                    obtainFooterOffset(state, footerScrollMode, footerHeight)
-                                alpha = if (contentOffsetProgress != 0f) 0f else 1f
-                            }
-                            .zIndex(footerZIndex)
-                    ) {
-                        footerIndicator(state)
-                    }
-
-                    // 内容
-                    Box(modifier = Modifier.graphicsLayer {
-                        val baseOffset =
-                            obtainContentOffset(state, headerScrollMode, footerScrollMode)
-                        translationY = baseOffset + contentOffsetProgress * size.height
-                    }) {
-                        contentContainer(content)
-                    }
+                // 内容
+                Box(modifier = Modifier.graphicsLayer {
+                    val baseOffset =
+                        obtainContentOffset(state, headerScrollMode, footerScrollMode)
+                    translationY = baseOffset + contentOffsetProgress * size.height
+                }) {
+                    contentContainer(content)
                 }
             }
         }

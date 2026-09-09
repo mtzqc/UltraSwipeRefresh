@@ -1,8 +1,12 @@
 package com.king.ultraswiperefresh
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.layout.SubcomposeLayout
-import androidx.compose.ui.unit.Constraints
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
 
 /**
  * 获取Header的偏移量
@@ -65,37 +69,32 @@ internal fun obtainZIndex(nestedScrollMode: NestedScrollMode): Float {
 }
 
 /**
- * 通过[SubcomposeLayout]测量子布局[headerIndicator]和[footerIndicator]的高度
+ * 记录 Header/Footer 指示器实际放置后的像素高度，供阈值计算与动画定位使用。
+ *
+ * 通过 [Modifier.onSizeChanged] 在真实布局后回写高度（首帧为 0，布局完成后即正确），
+ * 相比 SubcomposeLayout 预测量方案，指示器只组合一次、
+ * 且指示器高度变化不会触发内容重新测量。
  */
 @Composable
-internal fun RefreshSubComposeLayout(
-    headerIndicator: @Composable () -> Unit,
-    footerIndicator: @Composable () -> Unit,
-    content: @Composable (headerHeight: Int, footerHeight: Int) -> Unit
-) {
-    SubcomposeLayout { constraints: Constraints ->
+internal fun rememberIndicatorHeights(): IndicatorHeights = remember { IndicatorHeights() }
 
-        val headerMeasurable = subcompose(
-            slotId = "headerIndicator",
-            content = headerIndicator
-        ).firstOrNull()?.measure(constraints)
-
-        val footerMeasurable = subcompose(
-            slotId = "footerIndicator",
-            content = footerIndicator
-        ).firstOrNull()?.measure(constraints)
-
-        val contentMeasurable = subcompose(
-            slotId = "content",
-            content = {
-                content(
-                    headerMeasurable?.height ?: 0,
-                    footerMeasurable?.height ?: 0
-                )
-            }).map { it.measure(constraints) }.first()
-
-        layout(width = contentMeasurable.width, height = contentMeasurable.height) {
-            contentMeasurable.placeRelative(0, 0)
-        }
-    }
+/**
+ * 指示器高度持有者
+ */
+internal class IndicatorHeights {
+    var headerHeight by mutableIntStateOf(0)
+    var footerHeight by mutableIntStateOf(0)
 }
+
+/**
+ * 测量并上报 Header 指示器高度的 Modifier
+ */
+internal fun Modifier.onHeaderHeightChanged(heights: IndicatorHeights): Modifier =
+    onSizeChanged { heights.headerHeight = it.height }
+
+/**
+ * 测量并上报 Footer 指示器高度的 Modifier
+ */
+internal fun Modifier.onFooterHeightChanged(heights: IndicatorHeights): Modifier =
+    onSizeChanged { heights.footerHeight = it.height }
+
